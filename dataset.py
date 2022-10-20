@@ -55,7 +55,7 @@ def trafo_pil_to_tensor(ima_pil, ima_size):
     transforms.ToTensor(), # From PIL Image (H x W x C) in range [0, 255] to torch.FloatTensor (C x H x W) in range [0.0, 1.0]
     transforms.Lambda(lambda t: (t * 2) - 1),
     ])
-  return trafo(ima_pil).unsqueeze(0)
+  return trafo(ima_pil) # .unsqueeze(0) # <-- FIXME
 
 
 # ----------------------------------------------------------------

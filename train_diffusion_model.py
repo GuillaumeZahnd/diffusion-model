@@ -1,9 +1,13 @@
 import torch
-from unet import Unet
+import torch.nn.functional as F
 from icecream import ic
 
+from unet import Unet
 from set_parameters import set_parameters
 from get_dataloader import get_dataloader
+from schedule import define_schedule
+from forward_diffusion import q_sample
+from dataset import trafo_tensor_to_pil
 
 
 def count_parameters(model):
@@ -42,6 +46,22 @@ if __name__ == '__main__':
 
   # Tractable diffusion
 
+  # Define betas schedule
+  betas = define_schedule(schedule_strategy = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
+
+  # Derive alphas
+  alphas = 1. - betas
+  alphas_cumprod = torch.cumprod(alphas, axis=0)
+  alphas_cumprod_prev = F.pad(alphas_cumprod[:-1], (1, 0), value=1.0)
+  sqrt_recip_alphas = torch.sqrt(1.0 / alphas)
+
+  # calculations for diffusion q(x_t | x_{t-1}) and others
+  sqrt_alphas_cumprod = torch.sqrt(alphas_cumprod)
+  sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - alphas_cumprod)
+
+  # calculations for posterior q(x_{t-1} | x_t, x_0)
+  posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)
+
   """
   trn_loss_accumulator = EpochLossAccumulator()
   time_epoch = time.time()
@@ -49,21 +69,40 @@ if __name__ == '__main__':
 
   for id_batch, (batch_names, batch_images) in enumerate(loader_trn):
 
+    ic(batch_images.shape)
+
     # Reset gradients to zero
     optimizer.zero_grad()
 
     # Pool a timestep value uniformally at random for every sample of the batch
     current_batch_size = batch_images.shape[0] # [N, C, H, W]
-    timestep = torch.randint(0, p.NB_TIMESTEPS, (current_batch_size, ), device = device).long()
+    batch_timesteps = torch.randint(0, p.NB_TIMESTEPS, (current_batch_size, ), device = device).long()
 
     # Noisify the image using the pooled timestep values
-    noise = torch.randn_like(batch_images)
-
-    batch_images_noisy = 
+    batch_images_noisy = q_sample(
+      batch_images.to(device), batch_timesteps, sqrt_alphas_cumprod, sqrt_one_minus_alphas_cumprod, noise=None)
 
     # Forward pass with the deep neural network to predict the noise values
 
+    ic(batch_images_noisy.shape)
+    ic(batch_timesteps.shape)
+    predicted_noise = model(batch_images_noisy, batch_timesteps)
+
+
     # Calculate the corresponding loss, then back propagate the gradients to optimize the model weights
+
+
+    """
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(2, 1)
+    axx = ax[0]
+    fig.sca(axx)
+    im = axx.imshow(trafo_tensor_to_pil(batch_images.detach().cpu()))
+    axx = ax[1]
+    fig.sca(axx)
+    im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
+    plt.show()
+    """
 
 
     """
@@ -87,6 +126,8 @@ if __name__ == '__main__':
   log_epoch_console_tensorboard(
     writer, 'Trn', '0_training_loss', id_epoch, time_epoch, current_train_loss, new_val_loss)
   """
+
+  """
   # Learning rate evolution
   scheduler.step()
-
+  """

@@ -1,4 +1,5 @@
 import torch.nn as nn
+from einops import rearrange
 from helpers import exists
 
 

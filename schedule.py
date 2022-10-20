@@ -3,14 +3,16 @@ import torch
 
 # ----------------------------------------------------------------
 def define_schedule(schedule_strategy, nb_timesteps):
-  if schedule_strategy == 'cosine':
+  if schedule_strategy == 'COSINE':
     return cosine_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'linear':
+  elif schedule_strategy == 'LINEAR':
     return linear_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'quadratic':
+  elif schedule_strategy == 'QUADRATIC':
     return quadratic_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'sigmoid':
+  elif schedule_strategy == 'SIGMOID':
     return sigmoid_beta_schedule(nb_timesteps)
+  else:
+    raise NotImplementedError()
 
 
 # ----------------------------------------------------------------

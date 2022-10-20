@@ -11,7 +11,7 @@ from attention import Attention, LinearAttention
 
 class Unet(nn.Module):
 
-# ----------------------------------------------------------------
+  # ----------------------------------------------------------------
   def __init__(
     self,
     dim,
@@ -85,32 +85,32 @@ class Unet(nn.Module):
       nn.Conv2d(dim, out_dim, 1))
 
 
-# ----------------------------------------------------------------
-def forward(self, x, time):
+  # ----------------------------------------------------------------
+  def forward(self, x, time):
 
-  x = self.init_conv(x)
-  t = self.time_mlp(time) if exists(self.time_mlp) else None
-  h = []
+    x = self.init_conv(x)
+    t = self.time_mlp(time) if exists(self.time_mlp) else None
+    h = []
 
-  # Downsample
-  for block1, block2, attn, downsample in self.downs:
-    x = block1(x, t)
-    x = block2(x, t)
-    x = attn(x)
-    h.append(x)
-    x = downsample(x)
+    # Downsample
+    for block1, block2, attn, downsample in self.downs:
+      x = block1(x, t)
+      x = block2(x, t)
+      x = attn(x)
+      h.append(x)
+      x = downsample(x)
 
-  # Bottleneck
-  x = self.mid_block1(x, t)
-  x = self.mid_attn(x)
-  x = self.mid_block2(x, t)
+    # Bottleneck
+    x = self.mid_block1(x, t)
+    x = self.mid_attn(x)
+    x = self.mid_block2(x, t)
 
-  # Upsample
-  for block1, block2, attn, upsample in self.ups:
-    x = torch.cat((x, h.pop()), dim=1)
-    x = block1(x, t)
-    x = block2(x, t)
-    x = attn(x)
-    x = upsample(x)
+    # Upsample
+    for block1, block2, attn, upsample in self.ups:
+      x = torch.cat((x, h.pop()), dim=1)
+      x = block1(x, t)
+      x = block2(x, t)
+      x = attn(x)
+      x = upsample(x)
 
-  return self.final_conv(x)
+    return self.final_conv(x)
