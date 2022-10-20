@@ -1,3 +1,7 @@
+import torch.nn as nn
+from helpers import exists
+
+
 # ----------------------------------------------------------------
 class Block(nn.Module):
     def __init__(self, dim, dim_out, groups = 8):

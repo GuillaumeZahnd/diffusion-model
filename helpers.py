@@ -1,3 +1,8 @@
+import torch.nn as nn
+from inspect import isfunction
+from functools import partial
+
+
 def exists(x):
   return x is not None
 

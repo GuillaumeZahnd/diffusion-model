@@ -1,7 +1,7 @@
-import torch.nn
+import torch.nn as nn
 
 
-class PreNormalization(nn.Module):
+class PreNormalization(nn.Module): # <-- Still no consensus today whether to apply normalization pre- or post- attention in Transformers
 
   def __init__(self, dim, fn):
     super().__init__()
