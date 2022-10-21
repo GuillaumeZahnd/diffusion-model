@@ -1,120 +1,58 @@
 import torch
-import torch.nn.functional as F
-from icecream import ic
+import math
 
 from unet import Unet
-from set_parameters import set_parameters
-from get_dataloader import get_dataloader
-from schedule import define_schedule
-from dataset import trafo_tensor_to_pil
-from nice_colorbar import nice_colorbar
-from trn import trn
-
-# ----------------------------------------------------------------
-def count_parameters(model):
-  return sum(p.numel() for p in model.parameters() if p.requires_grad)
+from set_parameters              import set_parameters
+from get_dataloaders             import get_dataloaders
+from get_optimizer_and_scheduler import get_optimizer_and_scheduler
+from routine_trn import routine_trn
+from routine_val import routine_val
+from package_utils.print_number_of_learnable_model_parameters import print_number_of_learnable_model_parameters
+from tractable_diffusion_process import TractableDiffusionProcess
 
 
-# ----------------------------------------------------------------
 if __name__ == '__main__':
 
   # Parameters
   p = set_parameters()
 
   # Model
-  model = Unet(dim = p.IMAGE_SIZE)
-  ic(count_parameters(model))
+  model = Unet(dim = p.IMA_SIZE)
+  print_number_of_learnable_model_parameters(model)
 
   # Device (GPU or CPU)
   model.to(p.DEVICE)
 
-  # Optimizer
-  if p.OPTIMIZER_NICKNAME == 'SGD':
-    optimizer = torch.optim.SGD(model.parameters(), lr=p.LEARNING_RATE, momentum=p.MOMENTUM)
-  elif p.OPTIMIZER_NICKNAME == 'ADAM':
-    optimizer = torch.optim.Adam(model.parameters(), lr=p.LEARNING_RATE)
-
-  # Scheduler
-  scheduler = torch.optim.lr_scheduler.StepLR(optimizer, p.SCHEDULER_STEP_SIZE, p.SCHEDULER_GAMMA)
+  # Optimizer and scheduler
+  optimizer, scheduler = get_optimizer_and_scheduler(p, model)
 
   # Dataloader
-  loader_trn, nb_batches_trn, nb_samples_trn = get_dataloader(p)
+  loader_trn, loader_val = get_dataloaders(p)
 
-  # Tractable diffusion
-
-  # Define betas schedule
-  betas = define_schedule(schedule_strategy = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
-
-  # Derive alphas
-  alphas = 1. - betas
-  alphas_cumprod = torch.cumprod(alphas, axis=0)
-  alphas_cumprod_prev = F.pad(alphas_cumprod[:-1], (1, 0), value=1.0)
-  sqrt_recip_alphas = torch.sqrt(1.0 / alphas)
-
-  # calculations for diffusion q(x_t | x_{t-1}) and others
-  sqrt_alphas_cumprod = torch.sqrt(alphas_cumprod)
-  sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - alphas_cumprod)
-
-  # calculations for posterior q(x_{t-1} | x_t, x_0)
-  posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)
+  # Tractable diffusion process
+  tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
 
   # Loop
+  min_val_loss = math.inf
   for id_epoch in range(p.NB_EPOCHS):
-    model, optimizer, scheduler = trn(
-      p,
-      model,
-      loader_trn,
-      optimizer,
-      scheduler,
-      sqrt_alphas_cumprod,
-      sqrt_one_minus_alphas_cumprod,
-      id_epoch,
-      nb_batches_trn)
 
-  """
-  trn_loss_accumulator = EpochLossAccumulator()
-  time_epoch = time.time()
-  """
+    # Training routine
+    model, optimizer, scheduler = routine_trn(
+      p         = p,
+      tdp       = tdp,
+      model     = model,
+      loader    = loader_trn,
+      id_epoch  = id_epoch,
+      optimizer = optimizer,
+      scheduler = scheduler)
 
-
-  """
-  import matplotlib.pyplot as plt
-  fig, ax = plt.subplots(2, 2)
-  axx = ax[0, 0]
-  fig.sca(axx)
-  im = axx.imshow(trafo_tensor_to_pil(batch_images.detach().cpu()))
-  nice_colorbar(im, axx)
-  axx = ax[1, 0]
-  fig.sca(axx)
-  im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
-  nice_colorbar(im, axx)
-  axx = ax[0, 1]
-  fig.sca(axx)
-  im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
-  nice_colorbar(im, axx)
-  axx = ax[1, 1]
-  fig.sca(axx)
-  im = axx.imshow(trafo_tensor_to_pil(noise.detach().cpu()))
-  nice_colorbar(im, axx)
-  plt.show()
-  """
-
-  """
-    # Keep track of the calculated loss
-    batch_size = sinogram_batch.shape[0]
-    trn_loss_accumulator.update_losses(batch_size, loss.item()*batch_size)
-    # Log the current batch
-    log_batch_to_console_tensorboard_harddrive(
-      id_epoch, 'Trn', trn_loss_accumulator, time_epoch, id_batch, nb_batch_trn, ima_ref_batch, ima_net_batch,
-      file_name_batch, writer, flip_trn, p, print_epoch_dir)
-
-  # Log the current epoch
-  current_train_loss = trn_loss_accumulator.get_epoch_loss()
-  log_epoch_console_tensorboard(
-    writer, 'Trn', '0_training_loss', id_epoch, time_epoch, current_train_loss, new_val_loss)
-  """
-
-  """
-  # Learning rate evolution
-  scheduler.step()
-  """
+    # Validation routine
+    min_val_loss = routine_val(
+      p            = p,
+      tdp          = tdp,
+      model        = model,
+      loader       = loader_val,
+      id_epoch     = id_epoch,
+      optimizer    = optimizer,
+      scheduler    = scheduler,
+      min_val_loss = min_val_loss)

@@ -1,5 +1,5 @@
 import time
-from stopwatch import stopwatch
+from package_utils.stopwatch import stopwatch
 
 
 class EpochLossAccumulator:
@@ -13,8 +13,8 @@ class EpochLossAccumulator:
   def update_losses(self, batch_size, loss_item):
     self.nb_items_all += batch_size
     self.nb_items_sub += batch_size
-    self.loss_all += loss_item
-    self.loss_sub += loss_item
+    self.loss_all     += loss_item * batch_size
+    self.loss_sub     += loss_item * batch_size
 
   def get_epoch_loss(self):
     if self.nb_items_all == 0: # (empty set)

@@ -1,28 +1,32 @@
 import torch
+import torch.nn.functional as F
 
 
 # ----------------------------------------------------------------
-def define_schedule(schedule_strategy, nb_timesteps):
-  if schedule_strategy == 'COSINE':
+def define_schedule(variance_schedule, nb_timesteps):
+  if variance_schedule == 'COSINE':
     return cosine_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'LINEAR':
+  elif variance_schedule == 'LINEAR':
     return linear_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'QUADRATIC':
+  elif variance_schedule == 'QUADRATIC':
     return quadratic_beta_schedule(nb_timesteps)
-  elif schedule_strategy == 'SIGMOID':
+  elif variance_schedule == 'SIGMOID':
     return sigmoid_beta_schedule(nb_timesteps)
   else:
     raise NotImplementedError()
 
 
 # ----------------------------------------------------------------
-def cosine_beta_schedule(nb_timesteps, s=0.008):
+def cosine_beta_schedule(nb_timesteps):
   steps = nb_timesteps + 1
+  s = 0.008
+  clip_low = 0.0001
+  clip_high = 0.9999
   x = torch.linspace(0, nb_timesteps, steps)
   alphas_cumprod = torch.cos(((x / nb_timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
   alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
   betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
-  return torch.clip(betas, 0.0001, 0.9999)
+  return torch.clip(betas, clip_low, clip_high)
 
 
 # ----------------------------------------------------------------
@@ -45,3 +49,26 @@ def sigmoid_beta_schedule(nb_timesteps):
   beta_end = 0.02
   betas = torch.linspace(-6, 6, nb_timesteps)
   return torch.sigmoid(betas) * (beta_end - beta_start) + beta_start
+
+class TractableDiffusionProcess:
+
+  # ----------------------------------------------------------------
+  def __init__(self, variance_schedule, nb_timesteps):
+
+    # Define betas schedule
+    self.betas = define_schedule(variance_schedule = variance_schedule, nb_timesteps = nb_timesteps)
+
+    # Derive alphas
+    self.alphas              = 1. - self.betas
+    self.alphas_cumprod      = torch.cumprod(self.alphas, axis=0)
+    self.alphas_cumprod_prev = F.pad(self.alphas_cumprod[:-1], (1, 0), value=1.0)
+    self.sqrt_recip_alphas   = torch.sqrt(1.0 / self.alphas)
+
+    # calculations for diffusion q(x_t | x_{t-1}) and others
+    self.sqrt_alphas_cumprod           = torch.sqrt(self.alphas_cumprod)
+    self.sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - self.alphas_cumprod)
+
+    # calculations for posterior q(x_{t-1} | x_t, x_0)
+    self.posterior_variance = self.betas * (1. - self.alphas_cumprod_prev) / (1. - self.alphas_cumprod)
+
+

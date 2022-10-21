@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from stopwatch import stopwatch
+from package_utils.stopwatch import stopwatch
 
 
 def print_batch_loss(epoch_id, phase, epoch_loss_accumulator, time_epoch, batch_id, nb_batches):
