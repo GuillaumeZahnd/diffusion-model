@@ -7,6 +7,7 @@ class Parameters:
 
   def __init__(
     self,
+    experiment_id,
     dataset_trn_path,
     dataset_val_path,
     results_path,
@@ -23,6 +24,7 @@ class Parameters:
     variance_schedule,
     nb_timesteps):
 
+    self.EXPERIMENT_ID       = experiment_id
     self.DATASET_TRN_PATH    = dataset_trn_path
     self.DATASET_VAL_PATH    = dataset_val_path
     self.RESULTS_PATH        = results_path
@@ -43,4 +45,10 @@ class Parameters:
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     # Create the directory structure if it does not already exists
-    Path(self.RESULTS_PATH).mkdir(parents = True, exist_ok = True)
+    self.RESULTS_IMAGES_EPOCHS = os.path.join(
+      self.RESULTS_PATH, self.EXPERIMENT_ID, 'trn_val_tst_images_across_epochs')
+    self.RESULTS_TRAINED_MODEL = os.path.join(
+      self.RESULTS_PATH, self.EXPERIMENT_ID, 'trained_model')
+
+    Path(self.RESULTS_IMAGES_EPOCHS).mkdir(parents = True, exist_ok = True)
+    Path(self.RESULTS_TRAINED_MODEL).mkdir(parents = True, exist_ok = True)

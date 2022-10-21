@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from package_utils.trafo_pil_to_and_from_tensor import trafo_tensor_to_pil
 
 
+# TODO --> How to display a colorbar in a meaningful way with RGB images?
 def showcase_image(
   batch_images_clean,
   batch_images_noisy,
@@ -61,8 +62,8 @@ def showcase_image(
     axx.set_title(r'Pixel-wise absolute error: $|\epsilon_\theta - \Phi(x_t)|$')
     fig.sca(axx)
     im = axx.imshow(
-      trafo_tensor_to_pil(abs(batch_target_noise[0,:,:,:] - batch_predicted_noise[0,:,:,:]).detach().cpu()))
+      trafo_tensor_to_pil(abs(batch_target_noise[0,:,:,:] - batch_predicted_noise[0,:,:,:]).detach().cpu()),
+      vmin = 0, vmax = 255)
 
-    #plt.show()
     fig.savefig(os.path.join(results_path, result_name_file), bbox_inches = 'tight')
     plt.close()

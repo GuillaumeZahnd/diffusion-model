@@ -9,6 +9,7 @@ from routine_trn import routine_trn
 from routine_val import routine_val
 from package_utils.print_number_of_learnable_model_parameters import print_number_of_learnable_model_parameters
 from tractable_diffusion_process import TractableDiffusionProcess
+from reverse_diffusion_process import sample
 
 
 if __name__ == '__main__':
@@ -56,3 +57,7 @@ if __name__ == '__main__':
       optimizer    = optimizer,
       scheduler    = scheduler,
       min_val_loss = min_val_loss)
+
+    # Reverse diffusion
+    sample(model, p.IMA_SIZE, batch_size=4, channels=3, nb_timesteps=p.NB_TIMESTEPS, tdp = tdp, id_epoch = id_epoch, results_path = p.RESULTS_IMAGES_EPOCHS)
+

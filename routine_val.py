@@ -9,6 +9,7 @@ from compute_loss import compute_loss
 from showcase_image import showcase_image
 
 
+# TODO --> Log the loss on W&B instead of TensorBoard
 def routine_val(
   p,
   tdp,
@@ -51,7 +52,7 @@ def routine_val(
       loss_accumulator.update_losses(current_batch_size, loss.item())
 
       # Log the current batch
-      showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'val', p.RESULTS_PATH)
+      showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'val', p.RESULTS_IMAGES_EPOCHS)
       print_batch_loss(id_epoch, trn_val_tst, loss_accumulator, time_epoch, id_batch, nb_batches)
 
   # Get epoch loss
@@ -62,14 +63,12 @@ def routine_val(
   if epoch_loss < min_val_loss:
     min_val_loss = epoch_loss
     new_val_loss = True
-    """ <-- TODO
     torch.save({
       'epoch': id_epoch +1,
       'network_state_dict': network.state_dict(),
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
-      checkpoint_file_path_and_name)
-      """
+      os.path.join(p.RESULTS_TRAINED_MODEL, 'model_min_val_loss_' + p.EXPERIMENT_ID + '.pt'))
   else:
     new_val_loss = False
 

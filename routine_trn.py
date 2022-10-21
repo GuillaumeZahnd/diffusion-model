@@ -9,6 +9,7 @@ from compute_loss import compute_loss
 from showcase_image import showcase_image
 
 
+# TODO --> Log the loss on W&B instead of TensorBoard
 def routine_trn(
   p,
   tdp,
@@ -58,13 +59,8 @@ def routine_trn(
     loss_accumulator.update_losses(current_batch_size, loss.item())
 
     # Log the current batch
-    showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'trn', p.RESULTS_PATH)
+    showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'trn', p.RESULTS_IMAGES_EPOCHS)
     print_batch_loss(id_epoch, trn_val_tst, loss_accumulator, time_epoch, id_batch, nb_batches)
-    """
-    log_batch_to_console_tensorboard_harddrive(
-      id_epoch, 'Trn', loss_accumulator, time_epoch, id_batch, nb_batch_trn, ima_ref_batch, ima_net_batch,
-      file_name_batch, writer, flip_trn, p, print_epoch_dir)
-    """
 
   # Get epoch loss
   epoch_loss = loss_accumulator.get_epoch_loss()
@@ -76,12 +72,6 @@ def routine_trn(
     epoch_loss   = epoch_loss,
     time_epoch   = time_epoch,
     new_val_loss = False)
-
-  """
-  current_train_loss = loss_accumulator.get_epoch_loss()
-  log_epoch_console_tensorboard(
-    writer, 'Trn', '0_training_loss', id_epoch, time_epoch, current_train_loss, new_val_loss)
-  """
 
   # Learning rate evolution
   scheduler.step()
