@@ -6,29 +6,27 @@ from unet import Unet
 from set_parameters import set_parameters
 from get_dataloader import get_dataloader
 from schedule import define_schedule
-from forward_diffusion import q_sample
 from dataset import trafo_tensor_to_pil
+from nice_colorbar import nice_colorbar
+from trn import trn
 
-
+# ----------------------------------------------------------------
 def count_parameters(model):
   return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
-
-
+# ----------------------------------------------------------------
 if __name__ == '__main__':
 
+  # Parameters
   p = set_parameters()
 
   # Model
   model = Unet(dim = p.IMAGE_SIZE)
   ic(count_parameters(model))
 
-
   # Device (GPU or CPU)
-  device = 'cuda' if torch.cuda.is_available() else 'cpu'
-  model.to(device)
-
+  model.to(p.DEVICE)
 
   # Optimizer
   if p.OPTIMIZER_NICKNAME == 'SGD':
@@ -38,8 +36,6 @@ if __name__ == '__main__':
 
   # Scheduler
   scheduler = torch.optim.lr_scheduler.StepLR(optimizer, p.SCHEDULER_STEP_SIZE, p.SCHEDULER_GAMMA)
-
-  model.train()
 
   # Dataloader
   loader_trn, nb_batches_trn, nb_samples_trn = get_dataloader(p)
@@ -62,55 +58,46 @@ if __name__ == '__main__':
   # calculations for posterior q(x_{t-1} | x_t, x_0)
   posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)
 
+  # Loop
+  for id_epoch in range(p.NB_EPOCHS):
+    model, optimizer, scheduler = trn(
+      p,
+      model,
+      loader_trn,
+      optimizer,
+      scheduler,
+      sqrt_alphas_cumprod,
+      sqrt_one_minus_alphas_cumprod,
+      id_epoch,
+      nb_batches_trn)
+
   """
   trn_loss_accumulator = EpochLossAccumulator()
   time_epoch = time.time()
   """
 
-  for id_batch, (batch_names, batch_images) in enumerate(loader_trn):
 
-    ic(batch_images.shape)
-
-    # Reset gradients to zero
-    optimizer.zero_grad()
-
-    # Pool a timestep value uniformally at random for every sample of the batch
-    current_batch_size = batch_images.shape[0] # [N, C, H, W]
-    batch_timesteps = torch.randint(0, p.NB_TIMESTEPS, (current_batch_size, ), device = device).long()
-
-    # Noisify the image using the pooled timestep values
-    batch_images_noisy = q_sample(
-      batch_images.to(device), batch_timesteps, sqrt_alphas_cumprod, sqrt_one_minus_alphas_cumprod, noise=None)
-
-    # Forward pass with the deep neural network to predict the noise values
-
-    ic(batch_images_noisy.shape)
-    ic(batch_timesteps.shape)
-    predicted_noise = model(batch_images_noisy, batch_timesteps)
-
-
-    # Calculate the corresponding loss, then back propagate the gradients to optimize the model weights
-
-
-    """
-    import matplotlib.pyplot as plt
-    fig, ax = plt.subplots(2, 1)
-    axx = ax[0]
-    fig.sca(axx)
-    im = axx.imshow(trafo_tensor_to_pil(batch_images.detach().cpu()))
-    axx = ax[1]
-    fig.sca(axx)
-    im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
-    plt.show()
-    """
-
-
-    """
-    # Calculate loss, propagate gradients back through the model, and optimize
-    loss = custom_loss(ima_net_batch, ima_ref_batch, p.LOSS_NICKNAME)
-    loss.backward()
-    optimizer.step()
-    """
+  """
+  import matplotlib.pyplot as plt
+  fig, ax = plt.subplots(2, 2)
+  axx = ax[0, 0]
+  fig.sca(axx)
+  im = axx.imshow(trafo_tensor_to_pil(batch_images.detach().cpu()))
+  nice_colorbar(im, axx)
+  axx = ax[1, 0]
+  fig.sca(axx)
+  im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
+  nice_colorbar(im, axx)
+  axx = ax[0, 1]
+  fig.sca(axx)
+  im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy.detach().cpu()))
+  nice_colorbar(im, axx)
+  axx = ax[1, 1]
+  fig.sca(axx)
+  im = axx.imshow(trafo_tensor_to_pil(noise.detach().cpu()))
+  nice_colorbar(im, axx)
+  plt.show()
+  """
 
   """
     # Keep track of the calculated loss

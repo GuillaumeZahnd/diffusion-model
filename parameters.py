@@ -1,3 +1,6 @@
+import torch
+
+
 class Parameters:
 
   def __init__(
@@ -31,3 +34,5 @@ class Parameters:
     self.LOSS_NICKNAME       = loss_nickname
     self.VARIANCE_SCHEDULE   = variance_schedule
     self.NB_TIMESTEPS        = nb_timesteps
+
+    self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
