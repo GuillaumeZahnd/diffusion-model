@@ -19,7 +19,9 @@ def trafo_tensor_to_pil(ima_tensor):
   trafo = transforms.Compose([
     transforms.Lambda(lambda t: (t + 1) / 2),
     transforms.Lambda(lambda t: t.permute(1, 2, 0)), # CHW to HWC # FIXME batch
+    #transforms.Lambda(lambda t: t.permute(0, 2, 3, 1)), # NCHW to NHWC
     transforms.Lambda(lambda t: t * 255.),
+    transforms.Lambda(lambda t: t.cpu()), # GZ
     transforms.Lambda(lambda t: t.numpy().astype(np.uint8)),
     transforms.ToPILImage(),
     ])

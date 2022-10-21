@@ -65,7 +65,7 @@ def routine_val(
     new_val_loss = True
     torch.save({
       'epoch': id_epoch +1,
-      'network_state_dict': network.state_dict(),
+      'model_state_dict': model.state_dict(),
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
       os.path.join(p.RESULTS_TRAINED_MODEL, 'model_min_val_loss_' + p.EXPERIMENT_ID + '.pt'))
