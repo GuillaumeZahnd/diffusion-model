@@ -5,7 +5,7 @@ def get_optimizer_and_scheduler(p, model):
 
   # Optimizer
   if p.OPTIMIZER_NICKNAME == 'SGD':
-    optimizer = torch.optim.SGD(model.parameters(), lr = p.LEARNING_RATE, momentum = p.MOMENTUM)
+    optimizer = torch.optim.SGD(model.parameters(), lr = p.LEARNING_RATE, momentum = p.LEARNING_MOMENTUM)
   elif p.OPTIMIZER_NICKNAME == 'ADAM':
     optimizer = torch.optim.Adam(model.parameters(), lr = p.LEARNING_RATE)
   else:
