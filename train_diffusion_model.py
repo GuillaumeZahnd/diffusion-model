@@ -6,8 +6,8 @@ from set_parameters              import set_parameters
 from get_optimizer_and_scheduler import get_optimizer_and_scheduler
 from routine_trn import routine_trn
 from routine_val import routine_val
+from routine_reverse_loop import routine_reverse_loop
 from tractable_diffusion_process import TractableDiffusionProcess
-from reverse_diffusion_process import sample
 
 from package_dataloaders.get_dataloaders                      import get_dataloaders
 from package_utils.print_number_of_learnable_model_parameters import print_number_of_learnable_model_parameters
@@ -60,5 +60,8 @@ if __name__ == '__main__':
       min_val_loss = min_val_loss)
 
     # Reverse diffusion
-    sample(model, p.IMA_SIZE, batch_size=4, channels=3, nb_timesteps=p.NB_TIMESTEPS, tdp = tdp, id_epoch = id_epoch, results_path = p.RESULTS_IMAGES_EPOCHS)
-
+    routine_reverse_loop(
+      p        = p,
+      tdp      = tdp,
+      model    = model,
+      id_epoch = id_epoch)

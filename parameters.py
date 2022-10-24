@@ -47,6 +47,7 @@ class Parameters:
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     # Create the directory structure if it does not already exists
+    # TODO --> Use better names
     self.RESULTS_IMAGES_EPOCHS = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trn_val_tst_images_across_epochs')
     self.RESULTS_TRAINED_MODEL = os.path.join(
