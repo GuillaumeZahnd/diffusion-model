@@ -1,11 +1,13 @@
 import torch
 import os
 from pathlib import Path
-from package_parameters.backup_parameters import backup_parameters
+from package_parameters.backup_parameters            import backup_parameters
+from package_loggers.print_all_experiment_parameters import print_all_experiment_parameters
 
 
 class Parameters:
 
+  # ----------------------------------------------------------------
   def __init__(
     self,
     experiment_id,
@@ -47,18 +49,28 @@ class Parameters:
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    # Create the directory structure if it does not already exists
-    # TODO --> Use better names
-    self.RESULTS_IMAGES_EPOCHS = os.path.join(
+    # Set the filename of the trained model
+    self.TRAINED_MODEL_NAME = 'model_min_val_loss_' + self.EXPERIMENT_ID + '.pt'
+
+    # Define and create directory structure
+    self.define_and_create_directory_structure()
+
+    # Backup the experiment parameters
+    backup_parameters(self.BACKUP_PARAMETERS_PATH)
+
+    # Print all experiment parameters
+    print_all_experiment_parameters(self)
+
+
+  # ----------------------------------------------------------------
+  def define_and_create_directory_structure(self):
+    self.RESULTS_IMAGES_EPOCHS = os.path.join( # TODO --> Use better names
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trn_val_tst_images_across_epochs')
-    self.RESULTS_TRAINED_MODEL = os.path.join(
+    self.TRAINED_MODEL_PATH = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trained_model')
     self.BACKUP_PARAMETERS_PATH = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'backup_parameters')
 
     Path(self.RESULTS_IMAGES_EPOCHS).mkdir(parents = True, exist_ok = True)
-    Path(self.RESULTS_TRAINED_MODEL).mkdir(parents = True, exist_ok = True)
+    Path(self.TRAINED_MODEL_PATH).mkdir(parents = True, exist_ok = True)
     Path(self.BACKUP_PARAMETERS_PATH).mkdir(parents = True, exist_ok = True)
-
-    # Backup the experiment parameters
-    backup_parameters(self.BACKUP_PARAMETERS_PATH)

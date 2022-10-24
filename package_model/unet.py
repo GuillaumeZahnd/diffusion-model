@@ -1,12 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import pre_normalization
 from functools import partial
-from helpers import exists, default, Residual, Upsample, Downsample
-from building_blocks import ResnetBlock, ConvNextBlock
-from sinusoidal_position_embeddings import SinusoidalPositionEmbeddings
-from attention import Attention, LinearAttention
+
+from package_model.helpers import exists, default, Residual, Upsample, Downsample
+from package_model.pre_normalization import PreNormalization
+from package_model.building_blocks import ResnetBlock, ConvNextBlock
+from package_model.sinusoidal_position_embeddings import SinusoidalPositionEmbeddings
+from package_model.attention import Attention, LinearAttention
 
 
 class Unet(nn.Module):
@@ -21,7 +22,7 @@ class Unet(nn.Module):
     channels            = 3,
     use_time_embeddings = True,
     resnet_block_groups = 8,
-    use_convnext        = True,
+    use_convnext        = False,
     convnext_mult       = 2):
 
     super().__init__()
@@ -62,12 +63,12 @@ class Unet(nn.Module):
       self.downs.append(nn.ModuleList([
         block_klass(dim_in, dim_out, time_emb_dim=time_dim),
         block_klass(dim_out, dim_out, time_emb_dim=time_dim),
-        Residual(pre_normalization.PreNormalization(dim_out, LinearAttention(dim_out))),
+        Residual(PreNormalization(dim_out, LinearAttention(dim_out))),
         Downsample(dim_out) if not is_last else nn.Identity()]))
 
     mid_dim = dims[-1]
     self.mid_block1 = block_klass(mid_dim, mid_dim, time_emb_dim=time_dim)
-    self.mid_attn = Residual(pre_normalization.PreNormalization(mid_dim, Attention(mid_dim)))
+    self.mid_attn = Residual(PreNormalization(mid_dim, Attention(mid_dim)))
     self.mid_block2 = block_klass(mid_dim, mid_dim, time_emb_dim=time_dim)
 
     for idx, (dim_in, dim_out) in enumerate(reversed(in_out[1:])):
@@ -75,7 +76,7 @@ class Unet(nn.Module):
       self.ups.append(nn.ModuleList([
         block_klass(dim_out * 2, dim_in, time_emb_dim=time_dim),
         block_klass(dim_in, dim_in, time_emb_dim=time_dim),
-        Residual(pre_normalization.PreNormalization(dim_in, LinearAttention(dim_in))),
+        Residual(PreNormalization(dim_in, LinearAttention(dim_in))),
         Upsample(dim_in) if not is_last else nn.Identity()]))
 
     out_dim = default(out_dim, channels)

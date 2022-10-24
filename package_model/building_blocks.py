@@ -1,6 +1,6 @@
 import torch.nn as nn
 from einops import rearrange
-from helpers import exists
+from package_model.helpers import exists
 
 
 # ----------------------------------------------------------------

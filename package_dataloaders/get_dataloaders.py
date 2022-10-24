@@ -1,5 +1,6 @@
 import torch
 from package_dataloaders.dataset import Dataset
+from package_loggers.print_datasets_information import print_datasets_information
 
 
 def get_dataloaders(p):
@@ -32,9 +33,7 @@ def get_dataloaders(p):
       ima_size         = p.IMA_SIZE),
     **params_dataloader_val)
 
-  print('Training set:\t number of samples = {}\t number of batches = {}\t batch size = {}'.format(
-    len(loader_trn.dataset), len(loader_trn), p.BATCH_SIZE))
-  print('Validation set:\t number of samples = {}\t number of batches = {}\t batch size = {}'.format(
-    len(loader_val.dataset), len(loader_val), p.BATCH_SIZE))
+  # Print information about the datasets
+  print_datasets_information(loader_trn = loader_trn, loader_val = loader_val, batch_size = p.BATCH_SIZE)
 
   return loader_trn, loader_val

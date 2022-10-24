@@ -2,11 +2,11 @@ import os
 import torch
 import time
 
-from epoch_loss_accumulator import EpochLossAccumulator
-from print_batch_loss import print_batch_loss
-from print_epoch_loss import print_epoch_loss
 from compute_loss import compute_loss
-from package_showcase.showcase_image import showcase_image
+from package_loggers.epoch_loss_accumulator import EpochLossAccumulator
+from package_loggers.print_batch_loss       import print_batch_loss
+from package_loggers.print_epoch_loss       import print_epoch_loss
+from package_showcase.showcase_image        import showcase_image
 
 
 # TODO --> Log the loss on W&B instead of TensorBoard
@@ -70,7 +70,7 @@ def routine_val(
       'model_state_dict': model.state_dict(),
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
-      os.path.join(p.RESULTS_TRAINED_MODEL, 'model_min_val_loss_' + p.EXPERIMENT_ID + '.pt'))
+      f = os.path.join(p.TRAINED_MODEL_PATH, p.TRAINED_MODEL_NAME))
   else:
     new_val_loss = False
 

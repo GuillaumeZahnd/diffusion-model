@@ -1,37 +1,32 @@
 import torch
 import math
 
-from unet import Unet
 from get_optimizer_and_scheduler import get_optimizer_and_scheduler
-from routine_trn import routine_trn
-from routine_val import routine_val
-from routine_reverse_loop import routine_reverse_loop
 from tractable_diffusion_process import TractableDiffusionProcess
 
-from package_parameters.set_parameters                        import set_parameters
-from package_dataloaders.get_dataloaders                      import get_dataloaders
-from package_utils.print_number_of_learnable_model_parameters import print_number_of_learnable_model_parameters
+from package_parameters.set_parameters     import set_parameters
+from package_model.get_model               import get_model
+from package_dataloaders.get_dataloaders   import get_dataloaders
+from package_routines.routine_trn          import routine_trn
+from package_routines.routine_val          import routine_val
+from package_routines.routine_reverse_loop import routine_reverse_loop
 
 
 if __name__ == '__main__':
 
-  # Parameters
+  # Set parameters
   p = set_parameters()
 
-  # Model
-  model = Unet(dim = p.IMA_SIZE)
-  print_number_of_learnable_model_parameters(model)
+  # Get model
+  model = get_model(p)
 
-  # Device (GPU or CPU)
-  model.to(p.DEVICE)
-
-  # Optimizer and scheduler
+  # Get optimizer and scheduler
   optimizer, scheduler = get_optimizer_and_scheduler(p, model)
 
-  # Dataloader
+  # Get dataloader
   loader_trn, loader_val = get_dataloaders(p)
 
-  # Tractable diffusion process
+  # Get and instance of the tractable diffusion process
   tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
 
   # Loop
