@@ -4,7 +4,6 @@ import time
 from epoch_loss_accumulator import EpochLossAccumulator
 from print_batch_loss import print_batch_loss
 from print_epoch_loss import print_epoch_loss
-from forward_diffusion import q_sample
 from compute_loss import compute_loss
 from showcase_image import showcase_image
 
@@ -40,8 +39,10 @@ def routine_trn(
     batch_timesteps = torch.randint(0, p.NB_TIMESTEPS, (current_batch_size, ), device = p.DEVICE).long()
 
     # Noisify the image using the pooled timestep values
-    batch_images_noisy, batch_target_noise = q_sample(
-      batch_images.to(p.DEVICE), batch_timesteps, tdp.sqrt_alphas_cumprod, tdp.sqrt_one_minus_alphas_cumprod, noise=None)
+    batch_images_noisy, batch_target_noise = tdp.q_sample(
+      ima_input = batch_images.to(p.DEVICE),
+      t         = batch_timesteps,
+      noise     = None)
 
     # Forward pass with the deep neural network to predict the noise values
     batch_predicted_noise = model(batch_images_noisy, batch_timesteps)

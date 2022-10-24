@@ -57,7 +57,7 @@ def sample(model, image_size, batch_size, channels, nb_timesteps, tdp, id_epoch,
 
     [axx.set_axis_off() for axx in ax.ravel()]
 
-    for idx in range(40):
+    for idx in range(nb_timesteps):
       id_x = idx % 20
       id_y = math.floor(idx / 20)
       ima = images_over_timesteps[idx]

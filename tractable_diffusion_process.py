@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+from package_utils.extract import extract
 
 
 # ----------------------------------------------------------------
@@ -50,9 +51,10 @@ def sigmoid_beta_schedule(nb_timesteps):
   betas = torch.linspace(-6, 6, nb_timesteps)
   return torch.sigmoid(betas) * (beta_end - beta_start) + beta_start
 
+
+# ----------------------------------------------------------------
 class TractableDiffusionProcess:
 
-  # ----------------------------------------------------------------
   def __init__(self, variance_schedule, nb_timesteps):
 
     # Define betas schedule
@@ -70,5 +72,29 @@ class TractableDiffusionProcess:
 
     # calculations for posterior q(x_{t-1} | x_t, x_0)
     self.posterior_variance = self.betas * (1. - self.alphas_cumprod_prev) / (1. - self.alphas_cumprod)
+
+
+  # Forward diffusion diffusion
+  def q_sample(self, ima_input, t, noise = None):
+
+    # TODO --> When is "noise" not None?
+    if noise is None:
+      noise = torch.randn_like(ima_input)
+
+    sqrt_alphas_cumprod_t = extract(self.sqrt_alphas_cumprod, t, ima_input.shape)
+    sqrt_one_minus_alphas_cumprod_t = extract(self.sqrt_one_minus_alphas_cumprod, t, ima_input.shape)
+
+    return sqrt_alphas_cumprod_t * ima_input + sqrt_one_minus_alphas_cumprod_t * noise, noise
+
+
+
+
+
+
+
+
+
+
+
 
 
