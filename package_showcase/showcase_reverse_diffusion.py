@@ -21,7 +21,7 @@ def showcase_reverse_diffusion(images_over_timesteps, p, id_epoch):
 
     axx = ax[id_y, id_x]
     fig.sca(axx)
-    axx.set_title('t={}'/format(idx))
+    axx.set_title('t={}'.format(idx))
     im = axx.imshow(images_over_timesteps[idx], vmin = 0, vmax = 255, cmap = 'gray')
 
   file_name = 'diffusion_{:002d}.png'.format(id_epoch)
