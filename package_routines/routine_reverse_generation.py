@@ -24,6 +24,6 @@ def routine_reverse_generation(p, tdp, model, id_epoch):
           x = img,
           t = torch.full((p.BATCH_SIZE, ), id_timestep, device = p.DEVICE, dtype = torch.long),
           t_index = id_timestep)
-        imgs.append(trafo_tensor_to_pil(img, id_image_in_batch))
+      imgs.append(trafo_tensor_to_pil(img, id_image_in_batch))
 
   showcase_reverse_generation(imgs, nb_images, p, id_epoch)
