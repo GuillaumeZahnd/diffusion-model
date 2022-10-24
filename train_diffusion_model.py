@@ -10,6 +10,7 @@ from package_diffusion.tractable_diffusion_process import TractableDiffusionProc
 from package_routines.routine_trn                  import routine_trn
 from package_routines.routine_val                  import routine_val
 from package_routines.routine_reverse_loop         import routine_reverse_loop
+from package_routines.routine_reverse_generation   import routine_reverse_generation
 
 
 if __name__ == '__main__':
@@ -55,8 +56,14 @@ if __name__ == '__main__':
       min_val_loss = min_val_loss)
 
     # Reverse diffusion
-    routine_reverse_loop(
-      p        = p,
-      tdp      = tdp,
-      model    = model,
-      id_epoch = id_epoch)
+    if min_val_loss:
+      routine_reverse_loop(
+        p        = p,
+        tdp      = tdp,
+        model    = model,
+        id_epoch = id_epoch)
+      routine_reverse_generation(
+        p        = p,
+        tdp      = tdp,
+        model    = model,
+        id_epoch = id_epoch)
