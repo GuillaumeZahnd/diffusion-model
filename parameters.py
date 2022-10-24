@@ -11,6 +11,7 @@ class Parameters:
     dataset_trn_path,
     dataset_val_path,
     results_path,
+    nb_samples_limit,
     ima_extension,
     ima_size,
     batch_size,
@@ -28,6 +29,7 @@ class Parameters:
     self.DATASET_TRN_PATH    = dataset_trn_path
     self.DATASET_VAL_PATH    = dataset_val_path
     self.RESULTS_PATH        = results_path
+    self.NB_SAMPLES_LIMIT    = nb_samples_limit
     self.IMA_EXTENSION       = ima_extension
     self.IMA_SIZE            = ima_size
     self.BATCH_SIZE          = batch_size

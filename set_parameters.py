@@ -1,3 +1,4 @@
+import math
 from parameters import Parameters
 
 
@@ -8,6 +9,7 @@ def set_parameters():
     dataset_trn_path    = '/media/guillaume/f0bb3659-b50a-4aac-b559-0953c567b645/afhq/train/wild',
     dataset_val_path    = '/media/guillaume/f0bb3659-b50a-4aac-b559-0953c567b645/afhq/val/wild',
     results_path        = '/media/guillaume/f0bb3659-b50a-4aac-b559-0953c567b645/RESULTS_DIFFUSION_MODEL/',
+    nb_samples_limit    = 87, #math.iinf,
     ima_extension       = '.jpg',
     ima_size            = 128,
     batch_size          = 4,

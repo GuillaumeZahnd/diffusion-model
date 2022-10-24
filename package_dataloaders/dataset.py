@@ -1,5 +1,7 @@
-import torch
 import os
+import math
+import torch
+import random
 import numpy as np
 from PIL import Image
 from package_utils.trafo_pil_to_and_from_tensor import trafo_pil_to_tensor
@@ -8,11 +10,18 @@ from package_utils.trafo_pil_to_and_from_tensor import trafo_pil_to_tensor
 class Dataset(torch.utils.data.Dataset):
 
   # ----------------------------------------------------------------
-  def __init__(self, dataset_path, ima_extension, ima_size):
-    self.list_of_all_files, self.list_of_all_subfolders = \
-      list_all_files_in_all_subfolders(dataset_path, ima_extension)
+  def __init__(self, dataset_path, nb_samples_limit, ima_extension, ima_size):
+
     self.ima_extension = ima_extension
-    self.ima_size = ima_size
+    self.ima_size      = ima_size
+
+    self.list_of_all_files, self.list_of_all_subfolders = list_all_files_in_all_subfolders(dataset_path, ima_extension)
+
+    if nb_samples_limit < len(self.list_of_all_files):
+      selected_samples_idx = np.arange(nb_samples_limit)
+      np.random.shuffle(selected_samples_idx)
+      self.list_of_all_files      = [self.list_of_all_files[idx] for idx in selected_samples_idx]
+      self.list_of_all_subfolders = [self.list_of_all_subfolders[idx] for idx in selected_samples_idx]
 
 
   # ----------------------------------------------------------------
