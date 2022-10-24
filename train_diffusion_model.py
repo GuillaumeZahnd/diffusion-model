@@ -2,13 +2,13 @@ import torch
 import math
 
 from unet import Unet
-from set_parameters              import set_parameters
 from get_optimizer_and_scheduler import get_optimizer_and_scheduler
 from routine_trn import routine_trn
 from routine_val import routine_val
 from routine_reverse_loop import routine_reverse_loop
 from tractable_diffusion_process import TractableDiffusionProcess
 
+from package_parameters.set_parameters                        import set_parameters
 from package_dataloaders.get_dataloaders                      import get_dataloaders
 from package_utils.print_number_of_learnable_model_parameters import print_number_of_learnable_model_parameters
 

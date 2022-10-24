@@ -6,7 +6,7 @@ from epoch_loss_accumulator import EpochLossAccumulator
 from print_batch_loss import print_batch_loss
 from print_epoch_loss import print_epoch_loss
 from compute_loss import compute_loss
-from showcase_image import showcase_image
+from package_showcase.showcase_image import showcase_image
 
 
 # TODO --> Log the loss on W&B instead of TensorBoard

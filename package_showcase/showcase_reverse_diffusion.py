@@ -8,6 +8,8 @@ def showcase_reverse_diffusion(images_over_timesteps, p, id_epoch):
   # TODO --> Adaptative number of panels w.r.t. the number of timesteps
   fig, ax = plt.subplots(10, 20)
 
+  fig.suptitle(id_epoch)
+
   fig.set_dpi(300)
   fig.set_size_inches(20*3, 10*3, forward = True)
 

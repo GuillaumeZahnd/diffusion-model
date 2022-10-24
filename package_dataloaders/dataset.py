@@ -15,7 +15,9 @@ class Dataset(torch.utils.data.Dataset):
     self.ima_extension = ima_extension
     self.ima_size      = ima_size
 
-    self.list_of_all_files, self.list_of_all_subfolders = list_all_files_in_all_subfolders(dataset_path, ima_extension)
+    self.list_of_all_files, self.list_of_all_subfolders = list_all_matching_files_in_all_matching_subfolders(
+      root_folder   = dataset_path,
+      ima_extension = ima_extension)
 
     if nb_samples_limit < len(self.list_of_all_files):
       selected_samples_idx = np.arange(nb_samples_limit)
@@ -31,6 +33,7 @@ class Dataset(torch.utils.data.Dataset):
 
   # ----------------------------------------------------------------
   def __getitem__(self, idx):
+    # TODO --> Add option to convert RGB to Gray according to "parameters.py"
     return self.list_of_all_files[idx], trafo_pil_to_tensor(
       ima_pil = load_ima(
         ima_path      = self.list_of_all_subfolders[idx],
@@ -40,14 +43,15 @@ class Dataset(torch.utils.data.Dataset):
 
 
 # ----------------------------------------------------------------
-def list_all_files_in_all_subfolders(root_folder, ima_extension):
+def list_all_matching_files_in_all_matching_subfolders(root_folder, ima_extension):
   list_of_all_files = []
   list_of_all_subfolders = []
   for all_subfolders, _, all_files in os.walk(root_folder):
     for file_name in all_files:
-      if file_name.endswith(ima_extension):                            # <-- Custom filter
-        list_of_all_files.append(file_name.replace(ima_extension, '')) # <-- We mark down the name of this file...
-        list_of_all_subfolders.append(all_subfolders)                  # <-- ...which is located at this absolute path
+      # This is currently the only "matching" condition, it can be adapted according to specific needs
+      if file_name.endswith(ima_extension):
+        list_of_all_files.append(file_name.replace(ima_extension, ''))
+        list_of_all_subfolders.append(all_subfolders)
   return list_of_all_files, list_of_all_subfolders
 
 
