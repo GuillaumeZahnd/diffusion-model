@@ -2,14 +2,14 @@ import torch
 import math
 
 from get_optimizer_and_scheduler import get_optimizer_and_scheduler
-from tractable_diffusion_process import TractableDiffusionProcess
 
-from package_parameters.set_parameters     import set_parameters
-from package_model.get_model               import get_model
-from package_dataloaders.get_dataloaders   import get_dataloaders
-from package_routines.routine_trn          import routine_trn
-from package_routines.routine_val          import routine_val
-from package_routines.routine_reverse_loop import routine_reverse_loop
+from package_parameters.set_parameters             import set_parameters
+from package_model.get_model                       import get_model
+from package_dataloaders.get_dataloaders           import get_dataloaders
+from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
+from package_routines.routine_trn                  import routine_trn
+from package_routines.routine_val                  import routine_val
+from package_routines.routine_reverse_loop         import routine_reverse_loop
 
 
 if __name__ == '__main__':

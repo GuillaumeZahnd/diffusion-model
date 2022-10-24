@@ -16,10 +16,10 @@ class Unet(nn.Module):
   def __init__(
     self,
     dim,
+    channels,
     init_dim            = None,
     out_dim             = None,
     dim_mults           = (1, 2, 4, 8),
-    channels            = 3,
     use_time_embeddings = True,
     resnet_block_groups = 8,
     use_convnext        = False,

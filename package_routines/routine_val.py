@@ -54,7 +54,7 @@ def routine_val(
       loss_accumulator.update_losses(current_batch_size, loss.item())
 
       # Log the current batch
-      showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'val', p.RESULTS_IMAGES_EPOCHS)
+      showcase_image(batch_images, batch_images_noisy, batch_target_noise, batch_predicted_noise, id_epoch, id_batch, batch_names, 'val', p.RESULTS_IMAGES_EPOCHS, p.RGB_OR_GRAYSCALE)
       print_batch_loss(id_epoch, trn_val_tst, loss_accumulator, time_epoch, id_batch, nb_batches)
 
   # Get epoch loss

@@ -10,10 +10,11 @@ from package_utils.trafo_pil_to_and_from_tensor import trafo_pil_to_tensor
 class Dataset(torch.utils.data.Dataset):
 
   # ----------------------------------------------------------------
-  def __init__(self, dataset_path, nb_samples_limit, ima_extension, ima_size):
+  def __init__(self, dataset_path, nb_samples_limit, ima_extension, ima_size, rgb_or_grayscale):
 
-    self.ima_extension = ima_extension
-    self.ima_size      = ima_size
+    self.ima_extension    = ima_extension
+    self.ima_size         = ima_size
+    self.rgb_or_grayscale = rgb_or_grayscale
 
     self.list_of_all_files, self.list_of_all_subfolders = list_all_matching_files_in_all_matching_subfolders(
       root_folder   = dataset_path,
@@ -36,9 +37,10 @@ class Dataset(torch.utils.data.Dataset):
     # TODO --> Add option to convert RGB to Gray according to "parameters.py"
     return self.list_of_all_files[idx], trafo_pil_to_tensor(
       ima_pil = load_ima(
-        ima_path      = self.list_of_all_subfolders[idx],
-        ima_name      = self.list_of_all_files[idx],
-        ima_extension = self.ima_extension),
+        ima_path         = self.list_of_all_subfolders[idx],
+        ima_name         = self.list_of_all_files[idx],
+        ima_extension    = self.ima_extension,
+        rgb_or_grayscale = self.rgb_or_grayscale),
       ima_size = self.ima_size)
 
 
@@ -56,5 +58,9 @@ def list_all_matching_files_in_all_matching_subfolders(root_folder, ima_extensio
 
 
 # ----------------------------------------------------------------
-def load_ima(ima_path, ima_name, ima_extension):
-  return Image.open(os.path.join(ima_path, ima_name + ima_extension))
+def load_ima(ima_path, ima_name, ima_extension, rgb_or_grayscale):
+  ima = Image.open(os.path.join(ima_path, ima_name + ima_extension))
+  if rgb_or_grayscale == 'grayscale':
+    return ima.convert('L')
+  else:
+    return ima

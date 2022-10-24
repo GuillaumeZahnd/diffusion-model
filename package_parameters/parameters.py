@@ -15,6 +15,7 @@ class Parameters:
     dataset_val_path,
     results_path,
     nb_samples_limit,
+    rgb_or_grayscale,
     ima_extension,
     ima_size,
     batch_size,
@@ -33,6 +34,7 @@ class Parameters:
     self.DATASET_VAL_PATH    = dataset_val_path
     self.RESULTS_PATH        = results_path
     self.NB_SAMPLES_LIMIT    = nb_samples_limit
+    self.RGB_OR_GRAYSCALE    = rgb_or_grayscale
     self.IMA_EXTENSION       = ima_extension
     self.IMA_SIZE            = ima_size
     self.BATCH_SIZE          = batch_size

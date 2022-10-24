@@ -1,10 +1,10 @@
 import os
-
 import matplotlib.pyplot as plt
+
 from package_utils.trafo_pil_to_and_from_tensor import trafo_tensor_to_pil
+from package_utils.nice_colorbar                import nice_colorbar
 
 
-# TODO --> How to display a colorbar in a meaningful way with RGB images?
 def showcase_image(
   batch_images_clean,
   batch_images_noisy,
@@ -14,9 +14,12 @@ def showcase_image(
   id_batch,
   batch_names,
   trn_val_tst,
-  results_path):
+  results_path,
+  rgb_or_grayscale):
 
   if id_batch == 0:
+
+    id_ima_in_batch = 0
 
     result_name_suptitle = 'Set: {}, Epoch: {}, Batch: {}, Name: {}'.format(
       trn_val_tst,
@@ -38,7 +41,10 @@ def showcase_image(
     axx = ax[0, 0]
     fig.sca(axx)
     axx.set_title(r'Original image:  $x_0$')
-    im = axx.imshow(trafo_tensor_to_pil(batch_images_clean[0,:,:,:].detach().cpu()))
+    im = axx.imshow(
+      trafo_tensor_to_pil(batch_images_clean, id_ima_in_batch), vmin = 0, vmax = 255, cmap = 'gray')
+    if rgb_or_grayscale == 'grayscale':
+      nice_colorbar(im, axx)
 
     # FIXME --> In the original paper by Ho, "\epsilon_\theta" is function of "x(t)", ...
     # ...here the noise is always random and therefore independant of "x(t)"
@@ -46,24 +52,35 @@ def showcase_image(
     axx = ax[1, 0]
     fig.sca(axx)
     axx.set_title(r'Noisy image: $x_t = \sqrt{\overline{\alpha_t}}x_0 + \sqrt{1-\overline{\alpha_t}}\epsilon_\theta$')
-    im = axx.imshow(trafo_tensor_to_pil(batch_images_noisy[0,:,:,:].detach().cpu()))
+    im = axx.imshow(
+      trafo_tensor_to_pil(batch_images_noisy, id_ima_in_batch), vmin = 0, vmax = 255, cmap = 'gray')
+    if rgb_or_grayscale == 'grayscale':
+      nice_colorbar(im, axx)
 
     axx = ax[0, 1]
     fig.sca(axx)
     axx.set_title(r'Target noise: $\epsilon_\theta$')
-    im = axx.imshow(trafo_tensor_to_pil(batch_target_noise[0,:,:,:].detach().cpu()))
+    im = axx.imshow(
+      trafo_tensor_to_pil(batch_target_noise, id_ima_in_batch), vmin = 0, vmax = 255, cmap = 'gray')
+    if rgb_or_grayscale == 'grayscale':
+      nice_colorbar(im, axx)
 
     axx = ax[1, 1]
     axx.set_title(r'Predicted noise: $\Phi(x_t)$')
     fig.sca(axx)
-    im = axx.imshow(trafo_tensor_to_pil(batch_predicted_noise[0,:,:,:].detach().cpu()))
+    im = axx.imshow(
+      trafo_tensor_to_pil(batch_predicted_noise, id_ima_in_batch), vmin = 0, vmax = 255, cmap = 'gray')
+    if rgb_or_grayscale == 'grayscale':
+      nice_colorbar(im, axx)
 
     axx = ax[2, 1]
     axx.set_title(r'Pixel-wise absolute error: $|\epsilon_\theta - \Phi(x_t)|$')
     fig.sca(axx)
     im = axx.imshow(
-      trafo_tensor_to_pil(abs(batch_target_noise[0,:,:,:] - batch_predicted_noise[0,:,:,:]).detach().cpu()),
-      vmin = 0, vmax = 255)
+      trafo_tensor_to_pil(abs(batch_target_noise - batch_predicted_noise), id_ima_in_batch),
+      vmin = 0, vmax = 255, cmap = 'gray')
+    if rgb_or_grayscale == 'grayscale':
+      nice_colorbar(im, axx)
 
     fig.savefig(os.path.join(results_path, result_name_file), bbox_inches = 'tight')
     plt.close()

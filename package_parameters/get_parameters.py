@@ -10,6 +10,7 @@ def get_parameters():
     dataset_val_path    = '/media/guillaume/f0bb3659-b50a-4aac-b559-0953c567b645/afhq/val/wild',
     results_path        = '/media/guillaume/f0bb3659-b50a-4aac-b559-0953c567b645/RESULTS_DIFFUSION_MODEL/',
     nb_samples_limit    = 10, # math.inf,
+    rgb_or_grayscale    = 'grayscale',
     ima_extension       = '.jpg',
     ima_size            = 128,
     batch_size          = 4,

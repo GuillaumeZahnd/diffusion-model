@@ -16,7 +16,8 @@ def get_dataloaders(p):
       dataset_path     = p.DATASET_TRN_PATH,
       nb_samples_limit = p.NB_SAMPLES_LIMIT,
       ima_extension    = p.IMA_EXTENSION,
-      ima_size         = p.IMA_SIZE),
+      ima_size         = p.IMA_SIZE,
+      rgb_or_grayscale = p.RGB_OR_GRAYSCALE),
     **params_dataloader_trn)
 
   # Dataloader for the validation ("val") dataset
@@ -30,7 +31,8 @@ def get_dataloaders(p):
       dataset_path     = p.DATASET_VAL_PATH,
       nb_samples_limit = p.NB_SAMPLES_LIMIT,
       ima_extension    = p.IMA_EXTENSION,
-      ima_size         = p.IMA_SIZE),
+      ima_size         = p.IMA_SIZE,
+      rgb_or_grayscale = p.RGB_OR_GRAYSCALE),
     **params_dataloader_val)
 
   # Print information about the datasets

@@ -1,5 +1,5 @@
 import math
-from parameters import Parameters
+from package_parameters.parameters import Parameters
 
 
 def set_parameters():
@@ -10,6 +10,7 @@ def set_parameters():
     dataset_val_path    = '???',
     results_path        = '???',
     nb_samples_limit    = math.inf,
+    rgb_or_grayscale    = 'rgb',
     ima_extension       = '.jpg',
     ima_size            = 128,
     batch_size          = 4,
