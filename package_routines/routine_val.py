@@ -82,4 +82,4 @@ def routine_val(
     time_epoch   = time_epoch,
     new_val_loss = new_val_loss)
 
-  return min_val_loss
+  return min_val_loss, new_val_loss

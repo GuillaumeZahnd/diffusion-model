@@ -3,7 +3,7 @@ import math
 import os
 
 
-def showcase_reverse_generation(generated_images, nb_images, p, id_epoch):
+def showcase_reverse_generation(p, generated_images, nb_images, id_epoch):
 
   fig, ax = plt.subplots(2, 2)
 
@@ -22,6 +22,6 @@ def showcase_reverse_generation(generated_images, nb_images, p, id_epoch):
     fig.sca(axx)
     im = axx.imshow(generated_images[idx], vmin = 0, vmax = 255, cmap = 'gray')
 
-  file_name = 'generation_{:002d}.png'.format(id_epoch)
+  file_name = 'generation_{:03d}.png'.format(id_epoch)
   fig.savefig(os.path.join(p.RESULTS_IMAGES_EPOCHS, file_name), bbox_inches = 'tight')
   plt.close()

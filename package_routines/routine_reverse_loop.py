@@ -7,13 +7,14 @@ from package_showcase.showcase_reverse_diffusion import showcase_reverse_diffusi
 
 def routine_reverse_loop(p, tdp, model, id_epoch):
 
-  nb_channels       = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3
-  shape             = (p.BATCH_SIZE, nb_channels, p.IMA_SIZE, p.IMA_SIZE)
-  id_image_in_batch = 0
+  nb_channels            = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3
+  shape                  = (p.BATCH_SIZE, nb_channels, p.IMA_SIZE, p.IMA_SIZE)
+  id_image_in_batch      = 0
+  image_through_timesteps = []
 
   with torch.no_grad():
+
     img = torch.randn(shape, device = p.DEVICE)
-    imgs = []
 
     for id_timestep in tqdm(reversed(range(0, p.NB_TIMESTEPS)), desc = 'Reverse diffusion', total = p.NB_TIMESTEPS):
       img = tdp.p_sample(
@@ -21,6 +22,6 @@ def routine_reverse_loop(p, tdp, model, id_epoch):
         x = img,
         t = torch.full((p.BATCH_SIZE, ), id_timestep, device = p.DEVICE, dtype = torch.long),
         t_index = id_timestep)
-      imgs.append(trafo_tensor_to_pil(img, id_image_in_batch))
+      image_through_timesteps.append(trafo_tensor_to_pil(img, id_image_in_batch))
 
-  showcase_reverse_diffusion(imgs, p, id_epoch)
+  showcase_reverse_diffusion(image_through_timesteps, p, id_epoch)

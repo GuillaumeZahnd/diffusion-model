@@ -45,7 +45,7 @@ if __name__ == '__main__':
       scheduler = scheduler)
 
     # Validation routine
-    min_val_loss = routine_val(
+    min_val_loss, new_val_loss = routine_val(
       p            = p,
       tdp          = tdp,
       model        = model,
@@ -56,7 +56,7 @@ if __name__ == '__main__':
       min_val_loss = min_val_loss)
 
     # Reverse diffusion
-    if min_val_loss:
+    if new_val_loss:
       routine_reverse_loop(
         p        = p,
         tdp      = tdp,
