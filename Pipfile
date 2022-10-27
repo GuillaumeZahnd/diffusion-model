@@ -1,0 +1,15 @@
+[[source]]
+url = 'https://pypi.org/simple'
+verify_ssl = true
+name = 'pypi'
+
+[requires]
+python_version = '3.10.6'
+
+[packages]
+numpy       = {index = 'pypi', version = '==1.23.4'}
+matplotlib  = {index = 'pypi', version = '==3.6.0'}
+torch       = {index = 'pypi', version = '== 1.12.1'}
+torchvision = {index = 'pypi', version = '== 0.13.1'}
+einops      = {index = 'pypi', version = '== 0.5.0'}
+tqdm        = {index = 'pypi', version = '== 4.64.1'}
