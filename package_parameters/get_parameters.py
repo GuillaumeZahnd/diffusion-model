@@ -6,9 +6,9 @@ from package_parameters.parameters import Parameters
 def get_parameters():
 
   return Parameters(
-    experiment_id       = 'pocahontas',
+    experiment_id       = 'run_zero',
     dataset_trn_path    = '/home/guillaume/DATASETS/afhq/train/',
-    dataset_val_path    = '/home/guillaume/DATASETS/afhq/test/',
+    dataset_val_path    = '/home/guillaume/DATASETS/afhq/val/',
     results_path        = '/home/guillaume/RESULTS/diffusion-model/',
     nb_samples_limit    = math.inf,
     rgb_or_grayscale    = 'rgb',
