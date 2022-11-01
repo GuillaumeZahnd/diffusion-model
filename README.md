@@ -2,6 +2,10 @@
 
 ## Prerequisite
 
+- CUDA-capable GPU
+- NVIDIA drivers and CUDA toolkit already installed
+- Python 3.x
+
 ### Install pip
 
 ```
@@ -18,6 +22,12 @@ pip install --user pipenv
 
 ```sh
 python setup_venv.py
+```
+
+### Install torch and torchvision via pip rather than via the Pipfile
+
+```sh
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 ```
 
 ### Create and edit a Git-untracked file to describe the experiment parameters
