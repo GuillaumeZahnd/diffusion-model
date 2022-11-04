@@ -1,7 +1,7 @@
 import torch
 import time
 
-from compute_loss import compute_loss
+from package_model.compute_loss             import compute_loss
 from package_loggers.epoch_loss_accumulator import EpochLossAccumulator
 from package_loggers.print_batch_loss       import print_batch_loss
 from package_loggers.print_epoch_loss       import print_epoch_loss

@@ -23,4 +23,5 @@ def set_parameters():
     scheduler_gamma     = 0.99,
     loss_nickname       = 'MSE',
     variance_schedule   = 'LINEAR',
-    nb_timesteps        = 200)
+    nb_timesteps        = 200,
+    resume_training     = False)

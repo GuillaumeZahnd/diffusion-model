@@ -1,10 +1,6 @@
-import torch
-import math
-
-from get_optimizer_and_scheduler import get_optimizer_and_scheduler
-
 from package_parameters.set_parameters             import set_parameters
 from package_model.get_model                       import get_model
+from package_model.get_optimizer_and_scheduler     import get_optimizer_and_scheduler
 from package_dataloaders.get_dataloaders           import get_dataloaders
 from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
 from package_routines.routine_trn                  import routine_trn
@@ -22,7 +18,7 @@ if __name__ == '__main__':
   model = get_model(p)
 
   # Get optimizer and scheduler
-  optimizer, scheduler = get_optimizer_and_scheduler(p, model)
+  model, optimizer, scheduler, starting_epoch, min_val_loss = get_optimizer_and_scheduler(p, model)
 
   # Get dataloader
   loader_trn, loader_val = get_dataloaders(p)
@@ -31,8 +27,7 @@ if __name__ == '__main__':
   tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
 
   # Loop
-  min_val_loss = math.inf
-  for id_epoch in range(p.NB_EPOCHS):
+  for id_epoch in range(starting_epoch, p.NB_EPOCHS):
 
     # Training routine
     model, optimizer, scheduler = routine_trn(

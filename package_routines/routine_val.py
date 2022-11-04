@@ -2,7 +2,7 @@ import os
 import torch
 import time
 
-from compute_loss import compute_loss
+from package_model.compute_loss             import compute_loss
 from package_loggers.epoch_loss_accumulator import EpochLossAccumulator
 from package_loggers.print_batch_loss       import print_batch_loss
 from package_loggers.print_epoch_loss       import print_epoch_loss
@@ -71,6 +71,7 @@ def routine_val(
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
       f = os.path.join(p.TRAINED_MODEL_PATH, p.TRAINED_MODEL_NAME))
+      # TODO --> Properly save the min val loss as well
   else:
     new_val_loss = False
 

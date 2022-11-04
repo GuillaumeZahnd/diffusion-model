@@ -11,7 +11,7 @@ def routine_reverse_generation(p, tdp, model, id_epoch):
   batch_size        = 1
   shape             = (batch_size, nb_channels, p.IMA_SIZE, p.IMA_SIZE)
   id_image_in_batch = 0
-  nb_images         = 4
+  nb_images         = 9
   generated_images  = []
 
   with torch.no_grad():
