@@ -13,7 +13,7 @@ if __name__ == '__main__':
   # Root folder containing the results of previous experiments
   save_path = '/home/guillaume/RESULTS/diffusion-model'
   # Experiment name
-  experiment_name = 'run_three'
+  experiment_name = 'run_one'
 
   # Import the parameters
   sys.path.insert(0, os.path.join(save_path, experiment_name, 'backup_parameters'))
@@ -40,11 +40,13 @@ if __name__ == '__main__':
     routine_reverse_loop(
       p     = p,
       tdp   = tdp,
-      model = model)
+      model = model,
+      id_epoch = 999) # FIXME (display)
 
   DO_REVERSE_GENERATION = True
   if DO_REVERSE_GENERATION:
     routine_reverse_generation(
       p     = p,
       tdp   = tdp,
-      model = model)
+      model = model,
+      id_epoch = 999) # FIXME (display)
