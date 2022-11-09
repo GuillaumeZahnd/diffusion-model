@@ -5,7 +5,7 @@ from package_utils.trafo_pil_to_and_from_tensor  import trafo_tensor_to_pil
 from package_showcase.showcase_reverse_diffusion import showcase_reverse_diffusion
 
 
-def routine_reverse_loop(p, tdp, model, id_epoch):
+def routine_reverse_loop(p, tdp, model, id_epoch = None):
 
   nb_channels            = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3
   shape                  = (p.BATCH_SIZE, nb_channels, p.IMA_SIZE, p.IMA_SIZE)

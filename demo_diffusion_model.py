@@ -1,0 +1,50 @@
+import os
+import sys
+import torch
+
+from package_model.get_model                       import get_model
+from package_routines.routine_reverse_loop         import routine_reverse_loop
+from package_routines.routine_reverse_generation   import routine_reverse_generation
+from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
+
+
+if __name__ == '__main__':
+
+  # Root folder containing the results of previous experiments
+  save_path = '/home/guillaume/RESULTS/diffusion-model'
+  # Experiment name
+  experiment_name = 'run_three'
+
+  # Import the parameters
+  sys.path.insert(0, os.path.join(save_path, experiment_name, 'backup_parameters'))
+  from get_parameters import get_parameters
+
+  # Get the experiment parameters
+  p = get_parameters()
+
+  # Get model
+  model = get_model(p)
+
+  # Get and instance of the tractable diffusion process
+  tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
+
+  # Load the trained model and set it in "eval" mode
+  network_checkpoint_path_and_filename = os.path.join(
+    save_path, experiment_name, 'trained_model', 'model_min_val_loss_{}.pt'.format(experiment_name))
+  checkpoint = torch.load(network_checkpoint_path_and_filename, map_location = p.DEVICE)
+  model.load_state_dict(checkpoint['model_state_dict'])
+  model.eval()
+
+  DO_REVERSE_LOOP = False
+  if DO_REVERSE_LOOP:
+    routine_reverse_loop(
+      p     = p,
+      tdp   = tdp,
+      model = model)
+
+  DO_REVERSE_GENERATION = True
+  if DO_REVERSE_GENERATION:
+    routine_reverse_generation(
+      p     = p,
+      tdp   = tdp,
+      model = model)

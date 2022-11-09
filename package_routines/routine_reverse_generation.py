@@ -5,7 +5,7 @@ from package_utils.trafo_pil_to_and_from_tensor   import trafo_tensor_to_pil
 from package_showcase.showcase_reverse_generation import showcase_reverse_generation
 
 
-def routine_reverse_generation(p, tdp, model, id_epoch):
+def routine_reverse_generation(p, tdp, model, id_epoch = None):
 
   nb_channels       = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3
   batch_size        = 1
@@ -13,6 +13,8 @@ def routine_reverse_generation(p, tdp, model, id_epoch):
   id_image_in_batch = 0
   nb_images         = 9
   generated_images  = []
+
+  # TODO: "p.BATCH_SIZE" is irrelevant here, and slows down the process, should be 1
 
   with torch.no_grad():
 
