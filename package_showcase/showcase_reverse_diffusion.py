@@ -3,26 +3,33 @@ import math
 import os
 
 
-def showcase_reverse_diffusion(images_over_timesteps, p, id_epoch):
+def showcase_reverse_diffusion(img_through_timesteps, p, id_epoch):
 
-  # TODO --> Adaptative number of panels w.r.t. the number of timesteps
-  fig, ax = plt.subplots(10, 20)
+  # Diffusion is presented in a 10-by-10 grid
+  nb_panels_x = 10
+  nb_panels_y = 10
+  nb_panels   = nb_panels_x * nb_panels_y
+  stride      = p.NB_TIMESTEPS / (nb_panels -1)
 
-  fig.suptitle('Epoch: {}'.format(id_epoch))
-
+  fig, ax = plt.subplots(nb_panels_x, nb_panels_y)
   fig.set_dpi(300)
-  fig.set_size_inches(20*2, 10*2, forward = True)
+  fig.set_size_inches(20, 20, forward = True)
+  fig.suptitle('Epoch: {}'.format(id_epoch))
 
   [axx.set_axis_off() for axx in ax.ravel()]
 
-  for idx in range(p.NB_TIMESTEPS):
-    id_x = idx % 20
-    id_y = math.floor(idx / 20)
+  for id_panel in range(nb_panels):
 
-    axx = ax[id_y, id_x]
+    id_timestep         = int(id_panel * stride)       # Here, the first item corresponds to t=0 and the last to t=T
+    id_timestep_reverse = p.NB_TIMESTEPS - id_timestep # Here, the items are ordered as during the reverse diffusion
+
+    id_panel_x = id_panel % nb_panels_x
+    id_panel_y = math.floor(id_panel / nb_panels_x)
+
+    axx = ax[id_panel_y, id_panel_x]
     fig.sca(axx)
-    axx.set_title('t={}'.format(idx))
-    im = axx.imshow(images_over_timesteps[idx], vmin = 0, vmax = 255, cmap = 'gray')
+    axx.set_title('t={}'.format(id_timestep_reverse))
+    im = axx.imshow(img_through_timesteps[id_timestep_reverse], vmin = 0, vmax = 255, cmap = 'gray')
 
   file_name = 'diffusion_{:03d}.png'.format(id_epoch)
   fig.savefig(os.path.join(p.RESULTS_IMAGES_EPOCHS, file_name), bbox_inches = 'tight')

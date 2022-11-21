@@ -13,7 +13,7 @@ if __name__ == '__main__':
   # Root folder containing the results of previous experiments
   save_path = '/home/guillaume/RESULTS/diffusion-model'
   # Experiment name
-  experiment_name = 'run_one'
+  experiment_name = 'run_one_pretrained'
 
   # Import the parameters
   sys.path.insert(0, os.path.join(save_path, experiment_name, 'backup_parameters'))
@@ -26,7 +26,7 @@ if __name__ == '__main__':
   model = get_model(p)
 
   # Get and instance of the tractable diffusion process
-  tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
+  tdp = TractableDiffusionProcess(p)
 
   # Load the trained model and set it in "eval" mode
   network_checkpoint_path_and_filename = os.path.join(
@@ -35,7 +35,7 @@ if __name__ == '__main__':
   model.load_state_dict(checkpoint['model_state_dict'])
   model.eval()
 
-  DO_REVERSE_LOOP = False
+  DO_REVERSE_LOOP = True
   if DO_REVERSE_LOOP:
     routine_reverse_loop(
       p     = p,
@@ -43,7 +43,7 @@ if __name__ == '__main__':
       model = model,
       id_epoch = 999) # FIXME (display)
 
-  DO_REVERSE_GENERATION = True
+  DO_REVERSE_GENERATION = False
   if DO_REVERSE_GENERATION:
     routine_reverse_generation(
       p     = p,
