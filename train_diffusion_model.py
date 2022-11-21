@@ -24,7 +24,7 @@ if __name__ == '__main__':
   loader_trn, loader_val = get_dataloaders(p)
 
   # Get and instance of the tractable diffusion process
-  tdp = TractableDiffusionProcess(variance_schedule = p.VARIANCE_SCHEDULE, nb_timesteps = p.NB_TIMESTEPS)
+  tdp = TractableDiffusionProcess(p)
 
   # Loop
   for id_epoch in range(starting_epoch, p.NB_EPOCHS):

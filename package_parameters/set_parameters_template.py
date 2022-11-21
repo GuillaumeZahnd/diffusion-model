@@ -23,5 +23,8 @@ def set_parameters():
     scheduler_gamma     = 0.99,
     loss_nickname       = 'MSE',
     variance_schedule   = 'LINEAR',
-    nb_timesteps        = 200,
-    resume_training     = False)
+    beta_one            = 1e-4,
+    beta_t              = 2e-2,
+    nb_timesteps        = 1000,
+    resume_training     = False, # FIXME
+    use_pretraining     = False) # FIXME

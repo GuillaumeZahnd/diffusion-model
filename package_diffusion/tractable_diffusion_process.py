@@ -7,10 +7,10 @@ from package_utils.extract                   import extract
 
 class TractableDiffusionProcess:
 
-  def __init__(self, variance_schedule, nb_timesteps):
+  def __init__(self, p):
 
     # Define betas schedule
-    self.betas = get_variance_schedule(variance_schedule = variance_schedule, nb_timesteps = nb_timesteps)
+    self.betas = get_variance_schedule(p)
 
     # Derive alphas
     self.alphas              = 1. - self.betas

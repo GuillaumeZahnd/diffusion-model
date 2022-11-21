@@ -2,15 +2,15 @@ import torch
 
 
 # ----------------------------------------------------------------
-def get_variance_schedule(variance_schedule, nb_timesteps):
-  if variance_schedule == 'COSINE':
-    return cosine_beta_schedule(nb_timesteps)
-  elif variance_schedule == 'LINEAR':
-    return linear_beta_schedule(nb_timesteps)
-  elif variance_schedule == 'QUADRATIC':
-    return quadratic_beta_schedule(nb_timesteps)
-  elif variance_schedule == 'SIGMOID':
-    return sigmoid_beta_schedule(nb_timesteps)
+def get_variance_schedule(p):
+  if p.VARIANCE_SCHEDULE == 'COSINE':
+    return cosine_beta_schedule(p.NB_TIMESTEPS)
+  elif p.VARIANCE_SCHEDULE == 'LINEAR':
+    return linear_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+  elif p.VARIANCE_SCHEDULE == 'QUADRATIC':
+    return quadratic_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+  elif p.VARIANCE_SCHEDULE == 'SIGMOID':
+    return sigmoid_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
   else:
     raise NotImplementedError()
 
@@ -29,22 +29,16 @@ def cosine_beta_schedule(nb_timesteps):
 
 
 # ----------------------------------------------------------------
-def linear_beta_schedule(nb_timesteps):
-  beta_start = 0.0001
-  beta_end = 0.02
-  return torch.linspace(beta_start, beta_end, nb_timesteps)
+def linear_beta_schedule(nb_timesteps, beta_one, beta_t):
+  return torch.linspace(beta_one, beta_t, nb_timesteps)
 
 
 # ----------------------------------------------------------------
-def quadratic_beta_schedule(nb_timesteps):
-  beta_start = 0.0001
-  beta_end = 0.02
-  return torch.linspace(beta_start**0.5, beta_end**0.5, nb_timesteps) ** 2
+def quadratic_beta_schedule(nb_timesteps, beta_one, beta_t):
+  return torch.linspace(beta_one**0.5, beta_t**0.5, nb_timesteps) ** 2
 
 
 # ----------------------------------------------------------------
-def sigmoid_beta_schedule(nb_timesteps):
-  beta_start = 0.0001
-  beta_end = 0.02
+def sigmoid_beta_schedule(nb_timesteps, beta_one, beta_t):
   betas = torch.linspace(-6, 6, nb_timesteps)
-  return torch.sigmoid(betas) * (beta_end - beta_start) + beta_start
+  return torch.sigmoid(betas) * (beta_t - beta_one) + beta_one

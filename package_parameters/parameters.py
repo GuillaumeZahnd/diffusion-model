@@ -27,8 +27,11 @@ class Parameters:
     scheduler_gamma,
     loss_nickname,
     variance_schedule,
+    beta_one,
+    beta_t,
     nb_timesteps,
-    resume_training):
+    resume_training,  # FIXME
+    use_pretraining): # FIXME
 
     self.EXPERIMENT_ID       = experiment_id
     self.DATASET_TRN_PATH    = dataset_trn_path
@@ -47,8 +50,11 @@ class Parameters:
     self.SCHEDULER_GAMMA     = scheduler_gamma
     self.LOSS_NICKNAME       = loss_nickname
     self.VARIANCE_SCHEDULE   = variance_schedule
+    self.BETA_ONE            = beta_one
+    self.BETA_T              = beta_t
     self.NB_TIMESTEPS        = nb_timesteps
     self.RESUME_TRAINING     = resume_training
+    self.USE_PRETRAINING     = use_pretraining
 
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
