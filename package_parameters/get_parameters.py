@@ -23,5 +23,8 @@ def get_parameters():
     scheduler_gamma     = 0.99,
     loss_nickname       = 'MAE',
     variance_schedule   = 'LINEAR',
+    beta_one            = 1e-4,
+    beta_t              = 2e-2,
     nb_timesteps        = 200,
-    resume_training     = True)
+    resume_training     = False,
+    use_pretraining     = False)

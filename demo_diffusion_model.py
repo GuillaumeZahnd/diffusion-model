@@ -10,10 +10,11 @@ from package_diffusion.tractable_diffusion_process import TractableDiffusionProc
 
 if __name__ == '__main__':
 
-  # Root folder containing the results of previous experiments
+  # [Parameter] Root folder containing the results of previous experiments
   save_path = '/home/guillaume/RESULTS/diffusion-model'
-  # Experiment name
-  experiment_name = 'run_one_pretrained'
+
+  # [Parameter] Experiment name
+  experiment_name = 'run_one'
 
   # Import the parameters
   sys.path.insert(0, os.path.join(save_path, experiment_name, 'backup_parameters'))

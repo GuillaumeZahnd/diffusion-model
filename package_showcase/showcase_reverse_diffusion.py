@@ -5,7 +5,7 @@ import os
 
 def showcase_reverse_diffusion(img_through_timesteps, p, id_epoch):
 
-  # Diffusion is presented in a 10-by-10 grid
+  # Diffusion is presented in a X-by-Y grid, where "nb_panels" images among "p.NB_TIMESTEPS" are regularly displayed
   nb_panels_x = 10
   nb_panels_y = 10
   nb_panels   = nb_panels_x * nb_panels_y
@@ -20,8 +20,8 @@ def showcase_reverse_diffusion(img_through_timesteps, p, id_epoch):
 
   for id_panel in range(nb_panels):
 
-    id_timestep         = int(id_panel * stride)       # Here, the first item corresponds to t=0 and the last to t=T
-    id_timestep_reverse = p.NB_TIMESTEPS - id_timestep # Here, the items are ordered as during the reverse diffusion
+    # Order items similarly as during the diffusion process: first is pure noise (t=T), last is generated image (t=0)
+    id_timestep_reverse = int(p.NB_TIMESTEPS - id_panel * stride)
 
     id_panel_x = id_panel % nb_panels_x
     id_panel_y = math.floor(id_panel / nb_panels_x)

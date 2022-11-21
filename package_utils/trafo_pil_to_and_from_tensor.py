@@ -18,9 +18,9 @@ def trafo_pil_to_tensor(ima_pil, ima_size):
 def trafo_tensor_to_pil(ima_tensor, id_ima_in_batch):
   trafo = transforms.Compose([
     transforms.Lambda(lambda t: (t + 1) / 2),                # Set the range to [0, 1]
-    transforms.Lambda(lambda t: t * 255.),                   # Set the range to [0, 255]
-    transforms.Lambda(lambda t: t.permute(1, 2, 0)),         # CHW to HWC
-    transforms.Lambda(lambda t: t.cpu()),                    # Gather to CPU from GPU
+    transforms.Lambda(lambda t: t * 255),                    # Set the range to [0, 255]
+    transforms.Lambda(lambda t: t.permute(1, 2, 0)),         # Permute from CHW to HWC
+    transforms.Lambda(lambda t: t.cpu()),                    # Gather from GPU to CPU
     transforms.Lambda(lambda t: t.numpy().astype(np.uint8)), # Transform from Tensor to Numpy array
     transforms.ToPILImage()                                  # Convert to PIL
     ])
