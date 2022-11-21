@@ -2,11 +2,11 @@
 
 ## ...Work in progress...
 
-![diffusion_model_1.png](../readme_images/diffusion_model_1?raw=true)
+![diffusion_model_1.png](../readme_images/diffusion_model_1.png?raw=true)
 
-![diffusion_model_2.png](../readme_images/diffusion_model_2?raw=true)
+![diffusion_model_2.png](../readme_images/diffusion_model_2.png?raw=true)
 
-![diffusion_model_3.png](../readme_images/diffusion_model_3?raw=true)
+![diffusion_model_3.png](../readme_images/diffusion_model_3.png?raw=true)
 
 ## About
 
@@ -14,7 +14,9 @@
 - Implementation based on the code provided by Ho et al. [2] and by Hugging Face [3].
 
 > [1] Ho J., Jain A., and Abbeel P. Denoising diffusion probabilistic models. Advances in Neural Information Processing Systems, 33:6840-6851, 2020.
+>
 > [2] [https://github.com/hojonathanho/diffusion](https://github.com/hojonathanho/diffusion)
+>
 > [3] [https://huggingface.co/blog/annotated-diffusion](https://huggingface.co/blog/annotated-diffusion)
 
 
