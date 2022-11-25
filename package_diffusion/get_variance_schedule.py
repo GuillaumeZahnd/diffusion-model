@@ -4,7 +4,7 @@ import torch
 # ----------------------------------------------------------------
 def get_variance_schedule(p):
   if p.VARIANCE_SCHEDULE == 'COSINE':
-    return cosine_beta_schedule(p.NB_TIMESTEPS)
+    return cosine_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
   elif p.VARIANCE_SCHEDULE == 'LINEAR':
     return linear_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
   elif p.VARIANCE_SCHEDULE == 'QUADRATIC':
@@ -16,7 +16,8 @@ def get_variance_schedule(p):
 
 
 # ----------------------------------------------------------------
-def cosine_beta_schedule(nb_timesteps):
+# --> FIXME
+def cosine_beta_schedule(nb_timesteps, beta_one, beta_t):
   steps = nb_timesteps + 1
   s = 0.008
   clip_low = 0.0001
@@ -25,7 +26,8 @@ def cosine_beta_schedule(nb_timesteps):
   alphas_cumprod = torch.cos(((x / nb_timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
   alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
   betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
-  return torch.clip(betas, clip_low, clip_high)
+  # return torch.clip(betas, clip_low, clip_high)
+  return torch.clip(betas, clip_low, clip_high) * beta_t
 
 
 # ----------------------------------------------------------------

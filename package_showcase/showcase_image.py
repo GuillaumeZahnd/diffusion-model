@@ -4,12 +4,15 @@ import matplotlib.pyplot as plt
 from package_utils.trafo_pil_to_and_from_tensor import trafo_tensor_to_pil
 from package_utils.nice_colorbar                import nice_colorbar
 
-
+# FIXME --> Input parameters are too messy
 def showcase_image(
   batch_images_clean,
   batch_images_noisy,
   batch_target_noise,
   batch_predicted_noise,
+  betas,
+  t,
+  variance_schedule,
   id_epoch,
   id_batch,
   batch_names,
@@ -20,6 +23,9 @@ def showcase_image(
   if id_batch == 0:
 
     id_ima_in_batch = 0
+
+    # FIXME
+    timestep = t[id_ima_in_batch].detach().cpu()
 
     result_name_suptitle = 'Set: {}, Epoch: {}, Batch: {}, Name: {}'.format(
       trn_val_tst,
@@ -66,6 +72,7 @@ def showcase_image(
       nice_colorbar(im, axx)
 
     axx = ax[1, 1]
+    fig.sca(axx)
     axx.set_title(r'Predicted noise: $\Phi(x_t)$')
     fig.sca(axx)
     im = axx.imshow(
@@ -73,9 +80,18 @@ def showcase_image(
     if rgb_or_grayscale == 'grayscale':
       nice_colorbar(im, axx)
 
-    axx = ax[2, 1]
-    axx.set_title(r'Pixel-wise absolute error: $|\epsilon_\theta - \Phi(x_t)|$')
+    axx = ax[2, 0]
     fig.sca(axx)
+    axx.set_axis_on()
+    axx.set_title(r'$\beta$ schedule ({}, t={})'.format(variance_schedule, timestep))
+    plt.plot(betas)
+    plt.plot(timestep, betas[timestep], '*')
+    plt.xlabel('Timesteps')
+    plt.ylabel(r'$\beta$')
+
+    axx = ax[2, 1]
+    fig.sca(axx)
+    axx.set_title(r'Pixel-wise absolute error: $|\epsilon_\theta - \Phi(x_t)|$')
     im = axx.imshow(
       trafo_tensor_to_pil(abs(batch_target_noise - batch_predicted_noise), id_ima_in_batch),
       vmin = 0, vmax = 255, cmap = 'gray')
