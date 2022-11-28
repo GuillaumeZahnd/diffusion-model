@@ -30,8 +30,7 @@ class Parameters:
     beta_one,
     beta_t,
     nb_timesteps,
-    resume_training,  # FIXME
-    use_pretraining): # FIXME
+    training_bootstrap):
 
     self.EXPERIMENT_ID       = experiment_id
     self.DATASET_TRN_PATH    = dataset_trn_path
@@ -53,8 +52,7 @@ class Parameters:
     self.BETA_ONE            = beta_one
     self.BETA_T              = beta_t
     self.NB_TIMESTEPS        = nb_timesteps
-    self.RESUME_TRAINING     = resume_training
-    self.USE_PRETRAINING     = use_pretraining
+    self.TRAINING_BOOTSTRAP  = training_bootstrap
 
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'

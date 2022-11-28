@@ -79,8 +79,9 @@ def routine_val(
     min_val_loss = epoch_loss
     new_val_loss = True
     torch.save({
-      'epoch': id_epoch +1,
-      'model_state_dict': model.state_dict(),
+      'epoch'               : id_epoch +1,
+      'min_val_loss'        : min_val_loss,
+      'model_state_dict'    : model.state_dict(),
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
       f = os.path.join(p.TRAINED_MODEL_PATH, p.TRAINED_MODEL_NAME))
