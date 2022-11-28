@@ -3,16 +3,26 @@ import torch
 
 # ----------------------------------------------------------------
 def get_variance_schedule(p):
-  if p.VARIANCE_SCHEDULE == 'COSINE':
-    return cosine_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
-  elif p.VARIANCE_SCHEDULE == 'LINEAR':
-    return linear_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+  if p.VARIANCE_SCHEDULE == 'LINEAR':
+    return linear_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)    
   elif p.VARIANCE_SCHEDULE == 'QUADRATIC':
     return quadratic_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+  elif p.VARIANCE_SCHEDULE == 'COSINE':
+    return cosine_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)  
   elif p.VARIANCE_SCHEDULE == 'SIGMOID':
     return sigmoid_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
   else:
     raise NotImplementedError()
+
+
+# ----------------------------------------------------------------
+def linear_beta_schedule(nb_timesteps, beta_one, beta_t):
+  return torch.linspace(beta_one, beta_t, nb_timesteps)
+
+
+# ----------------------------------------------------------------
+def quadratic_beta_schedule(nb_timesteps, beta_one, beta_t):
+  return torch.linspace(beta_one**0.5, beta_t**0.5, nb_timesteps) ** 2
 
 
 # ----------------------------------------------------------------
@@ -28,16 +38,6 @@ def cosine_beta_schedule(nb_timesteps, beta_one, beta_t):
   betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
   # return torch.clip(betas, clip_low, clip_high)
   return torch.clip(betas, clip_low, clip_high) * beta_t
-
-
-# ----------------------------------------------------------------
-def linear_beta_schedule(nb_timesteps, beta_one, beta_t):
-  return torch.linspace(beta_one, beta_t, nb_timesteps)
-
-
-# ----------------------------------------------------------------
-def quadratic_beta_schedule(nb_timesteps, beta_one, beta_t):
-  return torch.linspace(beta_one**0.5, beta_t**0.5, nb_timesteps) ** 2
 
 
 # ----------------------------------------------------------------
