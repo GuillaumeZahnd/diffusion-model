@@ -11,51 +11,59 @@ class Parameters:
   def __init__(
     self,
     experiment_id,
+    training_bootstrap,
+    results_path,
     dataset_trn_path,
     dataset_val_path,
-    results_path,
+    ima_extension,
     nb_samples_limit,
     rgb_or_grayscale,
-    ima_extension,
     ima_size,
     cropping_method,
-    batch_size,
     nb_epochs,
+    batch_size,
     optimizer_nickname,
     learning_rate,
     learning_momentum,
     scheduler_step_size,
     scheduler_gamma,
     loss_nickname,
-    variance_schedule,
+    nb_timesteps,
     beta_one,
     beta_t,
-    nb_timesteps,
-    training_bootstrap):
-
+    variance_schedule,
+    ):
+    
+    # Experiment
     self.EXPERIMENT_ID       = experiment_id
+    self.TRAINING_BOOTSTRAP  = training_bootstrap
+    self.RESULTS_PATH        = results_path
+    
+    # Dataset
     self.DATASET_TRN_PATH    = dataset_trn_path
     self.DATASET_VAL_PATH    = dataset_val_path
-    self.RESULTS_PATH        = results_path
+    self.IMA_EXTENSION       = ima_extension
     self.NB_SAMPLES_LIMIT    = nb_samples_limit
     self.RGB_OR_GRAYSCALE    = rgb_or_grayscale
-    self.IMA_EXTENSION       = ima_extension
     self.IMA_SIZE            = ima_size
     self.CROPPING_METHOD     = cropping_method
-    self.BATCH_SIZE          = batch_size
+    
+    # Training
     self.NB_EPOCHS           = nb_epochs
+    self.BATCH_SIZE          = batch_size
     self.OPTIMIZER_NICKNAME  = optimizer_nickname
     self.LEARNING_RATE       = learning_rate
     self.LEARNING_MOMENTUM   = learning_momentum
     self.SCHEDULER_STEP_SIZE = scheduler_step_size
     self.SCHEDULER_GAMMA     = scheduler_gamma
     self.LOSS_NICKNAME       = loss_nickname
+    
+    # Diffusion
     self.VARIANCE_SCHEDULE   = variance_schedule
     self.BETA_ONE            = beta_one
     self.BETA_T              = beta_t
     self.NB_TIMESTEPS        = nb_timesteps
-    self.TRAINING_BOOTSTRAP  = training_bootstrap
-
+    
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
