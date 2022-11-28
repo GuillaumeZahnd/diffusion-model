@@ -18,6 +18,7 @@ class Parameters:
     rgb_or_grayscale,
     ima_extension,
     ima_size,
+    cropping_method,
     batch_size,
     nb_epochs,
     optimizer_nickname,
@@ -40,6 +41,7 @@ class Parameters:
     self.RGB_OR_GRAYSCALE    = rgb_or_grayscale
     self.IMA_EXTENSION       = ima_extension
     self.IMA_SIZE            = ima_size
+    self.CROPPING_METHOD     = cropping_method
     self.BATCH_SIZE          = batch_size
     self.NB_EPOCHS           = nb_epochs
     self.OPTIMIZER_NICKNAME  = optimizer_nickname

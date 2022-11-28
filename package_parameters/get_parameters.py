@@ -6,7 +6,7 @@ from package_parameters.parameters import Parameters
 def get_parameters():
 
   return Parameters(
-    experiment_id       = 'renaissance_02_sigmoid',
+    experiment_id       = 'renaissance_03_sigmoid',
     dataset_trn_path    = '/home/guillaume/DATASETS/artbench/train/renaissance/',
     dataset_val_path    = '/home/guillaume/DATASETS/artbench/test/renaissance',
     results_path        = '/home/guillaume/RESULTS/diffusion-model/',
@@ -14,6 +14,7 @@ def get_parameters():
     rgb_or_grayscale    = 'rgb',
     ima_extension       = '.jpg',
     ima_size            = 128,
+    cropping_method     = 'RANDOM_CROP',
     batch_size          = 4,
     nb_epochs           = 400,
     optimizer_nickname  = 'SGD',
@@ -26,5 +27,4 @@ def get_parameters():
     beta_one            = 1e-4,
     beta_t              = 2e-2,
     nb_timesteps        = 200,
-    resume_training     = False,
-    use_pretraining     = False)
+    training_bootstrap  = 'NEW_TRAINING')

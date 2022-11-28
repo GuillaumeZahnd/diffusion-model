@@ -3,14 +3,27 @@ from torchvision import transforms
 
 
 # ----------------------------------------------------------------
-def trafo_pil_to_tensor(ima_pil, ima_size):
-  trafo = transforms.Compose([
-    transforms.CenterCrop(min(ima_pil.width, ima_pil.height)), # Squarify the image across the shortest side
-    transforms.Resize(ima_size),                               # Resize the image to the specified side-length
-    transforms.RandomHorizontalFlip(p = 0.5),                  # Apply horizontal mirroring (50% chance)
-    transforms.ToTensor(),                                     # From HWC in range [0, 255] to CHW in range [0, 1]
-    transforms.Lambda(lambda t: (t * 2) - 1)                   # Set the range to [-1, +1]
-    ])
+def trafo_pil_to_tensor(ima_pil, ima_size, cropping_method):
+
+  # Square-crop the image given its shortest side, then resize the cropped image to the specified side-length
+  if cropping_method == 'CENTER_CROP_THEN_RESIZE':
+    trafo = transforms.Compose([
+      transforms.CenterCrop(min(ima_pil.width, ima_pil.height)), # Square-crop the image given its shortest side
+      transforms.Resize(ima_size),                               # Resize the cropped image to the specified side-length
+      transforms.RandomHorizontalFlip(p = 0.5),                  # Apply horizontal mirroring (50% chance)
+      transforms.ToTensor(),                                     # From HWC in range [0, 255] to CHW in range [0, 1]
+      transforms.Lambda(lambda t: (t * 2) - 1)                   # Set the range to [-1, +1]
+      ])
+
+  # Square-crop the image given its shortest side, then resize the cropped image to the specified side-length
+  elif cropping_method == 'RANDOM_CROP':
+    trafo = transforms.Compose([
+      transforms.RandomCrop(size=(ima_size, ima_size)), # Square-crop the image given its shortest side
+      transforms.RandomHorizontalFlip(p = 0.5),         # Apply horizontal mirroring (50% chance)
+      transforms.ToTensor(),                            # From HWC in range [0, 255] to CHW in range [0, 1]
+      transforms.Lambda(lambda t: (t * 2) - 1)          # Set the range to [-1, +1]
+      ])
+
   return trafo(ima_pil)
 
 
