@@ -33,12 +33,12 @@ class Parameters:
     beta_t,
     variance_schedule,
     ):
-    
+
     # Experiment
     self.EXPERIMENT_ID       = experiment_id
     self.TRAINING_BOOTSTRAP  = training_bootstrap
     self.RESULTS_PATH        = results_path
-    
+
     # Dataset
     self.DATASET_TRN_PATH    = dataset_trn_path
     self.DATASET_VAL_PATH    = dataset_val_path
@@ -47,7 +47,7 @@ class Parameters:
     self.RGB_OR_GRAYSCALE    = rgb_or_grayscale
     self.IMA_SIZE            = ima_size
     self.CROPPING_METHOD     = cropping_method
-    
+
     # Training
     self.NB_EPOCHS           = nb_epochs
     self.BATCH_SIZE          = batch_size
@@ -57,13 +57,13 @@ class Parameters:
     self.SCHEDULER_STEP_SIZE = scheduler_step_size
     self.SCHEDULER_GAMMA     = scheduler_gamma
     self.LOSS_NICKNAME       = loss_nickname
-    
+
     # Diffusion
     self.VARIANCE_SCHEDULE   = variance_schedule
     self.BETA_ONE            = beta_one
     self.BETA_T              = beta_t
     self.NB_TIMESTEPS        = nb_timesteps
-    
+
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
