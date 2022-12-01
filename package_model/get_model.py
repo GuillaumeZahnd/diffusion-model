@@ -5,7 +5,10 @@ from package_loggers.print_number_of_learnable_model_parameters import print_num
 def get_model(p):
 
   # Instanciate the model
-  model = Unet(dim = p.IMA_SIZE, channels = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3)
+  model = Unet(
+    dim      = p.IMA_SIZE,
+    channels = 1 if p.RGB_OR_GRAYSCALE == 'grayscale' else 3,
+    backbone = p.BACKBONE)
 
   # Place the model to the adequate device (GPU or CPU)
   model.to(p.DEVICE)

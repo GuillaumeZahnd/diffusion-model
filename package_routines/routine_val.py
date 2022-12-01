@@ -35,8 +35,9 @@ def routine_val(
       # Determine the current batch size
       current_batch_size = batch_images.shape[0] # [N, C, H, W]
 
+      # TODO --> use p.TIMESTEPS_INFERENCE here
       # Pool a timestep value uniformally at random for every sample of the batch
-      batch_timesteps = torch.randint(0, p.NB_TIMESTEPS, (current_batch_size, ), device = p.DEVICE).long()
+      batch_timesteps = torch.randint(0, p.NB_TIMESTEPS_LEARNING, (current_batch_size, ), device = p.DEVICE).long()
 
       # Noisify the image using the pooled timestep values
       batch_images_noisy, batch_target_noise = tdp.q_sample(

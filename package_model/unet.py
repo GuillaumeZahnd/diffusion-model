@@ -20,12 +20,12 @@ class Unet(nn.Module):
     self,
     dim,
     channels,
+    backbone,
     init_dim            = None,
     out_dim             = None,
-    dim_mults           = (1, 2, 4, 8),
+    dim_mults           = (1, 2, 4, 8, 16),
     use_time_embeddings = True,
     resnet_block_groups = 8,
-    use_convnext        = False,
     convnext_mult       = 2):
 
     super().__init__()
@@ -39,10 +39,12 @@ class Unet(nn.Module):
     dims = [init_dim, *map(lambda m: dim * m, dim_mults)]
     in_out = list(zip(dims[:-1], dims[1:]))
 
-    if use_convnext:
-      block_klass = partial(ConvNextBlock, mult=convnext_mult)
+    if backbone == 'CONVNEXT':
+      block_klass = partial(ConvNextBlock, mult = convnext_mult)
+    elif backbone == 'RESNET':
+      block_klass = partial(ResnetBlock, groups = resnet_block_groups)
     else:
-      block_klass = partial(ResnetBlock, groups=resnet_block_groups)
+      raise NotImplementedError(backbone)
 
     # Time embeddings
     if use_time_embeddings:

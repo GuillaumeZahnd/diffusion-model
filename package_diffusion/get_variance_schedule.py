@@ -4,13 +4,13 @@ import torch
 # ----------------------------------------------------------------
 def get_variance_schedule(p):
   if p.VARIANCE_SCHEDULE == 'LINEAR':
-    return linear_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)    
+    return linear_beta_schedule(p.NB_TIMESTEPS_LEARNING, p.BETA_ONE, p.BETA_T)
   elif p.VARIANCE_SCHEDULE == 'QUADRATIC':
-    return quadratic_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+    return quadratic_beta_schedule(p.NB_TIMESTEPS_LEARNING, p.BETA_ONE, p.BETA_T)
   elif p.VARIANCE_SCHEDULE == 'COSINE':
-    return cosine_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)  
+    return cosine_beta_schedule(p.NB_TIMESTEPS_LEARNING, p.BETA_ONE, p.BETA_T)
   elif p.VARIANCE_SCHEDULE == 'SIGMOID':
-    return sigmoid_beta_schedule(p.NB_TIMESTEPS, p.BETA_ONE, p.BETA_T)
+    return sigmoid_beta_schedule(p.NB_TIMESTEPS_LEARNING, p.BETA_ONE, p.BETA_T)
   else:
     raise NotImplementedError()
 

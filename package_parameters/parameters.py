@@ -20,6 +20,7 @@ class Parameters:
     rgb_or_grayscale,
     ima_size,
     cropping_method,
+    backbone,
     nb_epochs,
     batch_size,
     optimizer_nickname,
@@ -28,7 +29,8 @@ class Parameters:
     scheduler_step_size,
     scheduler_gamma,
     loss_nickname,
-    nb_timesteps,
+    nb_timesteps_learning,
+    nb_timesteps_inference,
     beta_one,
     beta_t,
     variance_schedule,
@@ -49,6 +51,7 @@ class Parameters:
     self.CROPPING_METHOD     = cropping_method
 
     # Training
+    self.BACKBONE            = backbone
     self.NB_EPOCHS           = nb_epochs
     self.BATCH_SIZE          = batch_size
     self.OPTIMIZER_NICKNAME  = optimizer_nickname
@@ -59,10 +62,11 @@ class Parameters:
     self.LOSS_NICKNAME       = loss_nickname
 
     # Diffusion
-    self.VARIANCE_SCHEDULE   = variance_schedule
-    self.BETA_ONE            = beta_one
-    self.BETA_T              = beta_t
-    self.NB_TIMESTEPS        = nb_timesteps
+    self.VARIANCE_SCHEDULE      = variance_schedule
+    self.BETA_ONE               = beta_one
+    self.BETA_T                 = beta_t
+    self.NB_TIMESTEPS_LEARNING  = nb_timesteps_learning
+    self.NB_TIMESTEPS_INFERENCE = nb_timesteps_inference
 
     # Set appropriate device (GPU if available, else CPU)
     self.DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'

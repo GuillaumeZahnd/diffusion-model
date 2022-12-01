@@ -3,18 +3,18 @@ import sys
 import torch
 
 from package_model.get_model                       import get_model
-from package_routines.routine_reverse_loop         import routine_reverse_loop
-from package_routines.routine_reverse_generation   import routine_reverse_generation
 from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
+from package_routines.routine_reverse_diffusion    import routine_reverse_diffusion
+from package_routines.routine_reverse_generation   import routine_reverse_generation
 
 
 if __name__ == '__main__':
 
   # [Parameter] Root folder containing the results of previous experiments
-  save_path = '/home/guillaume/RESULTS/diffusion-model'
+  save_path = '???'
 
   # [Parameter] Experiment name
-  experiment_name = 'run_one'
+  experiment_name = '???'
 
   # Import the parameters
   sys.path.insert(0, os.path.join(save_path, experiment_name, 'backup_parameters'))
@@ -36,15 +36,15 @@ if __name__ == '__main__':
   model.load_state_dict(checkpoint['model_state_dict'])
   model.eval()
 
-  DO_REVERSE_LOOP = True
-  if DO_REVERSE_LOOP:
-    routine_reverse_loop(
+  DO_REVERSE_DIFFUSION = True
+  if DO_REVERSE_DIFFUSION:
+    routine_reverse_diffusion(
       p     = p,
       tdp   = tdp,
       model = model,
       id_epoch = 999) # FIXME (display)
 
-  DO_REVERSE_GENERATION = False
+  DO_REVERSE_GENERATION = True
   if DO_REVERSE_GENERATION:
     routine_reverse_generation(
       p     = p,
