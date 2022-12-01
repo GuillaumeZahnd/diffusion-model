@@ -74,6 +74,10 @@ class Parameters:
 
   # ----------------------------------------------------------------
   def define_and_create_directory_structure(self):
+    self.RESULTS_IMAGES_DIFFUSION = os.path.join(
+      self.RESULTS_PATH, self.EXPERIMENT_ID, 'images_diffusion')
+    self.RESULTS_IMAGES_GENERATION = os.path.join(
+      self.RESULTS_PATH, self.EXPERIMENT_ID, 'images_generation')
     self.RESULTS_IMAGES_EPOCHS = os.path.join( # TODO --> Use better names
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trn_val_tst_images_across_epochs')
     self.TRAINED_MODEL_PATH = os.path.join(
@@ -81,6 +85,8 @@ class Parameters:
     self.BACKUP_PARAMETERS_PATH = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'backup_parameters')
 
+    Path(self.RESULTS_IMAGES_DIFFUSION).mkdir(parents = True, exist_ok = True)
+    Path(self.RESULTS_IMAGES_GENERATION).mkdir(parents = True, exist_ok = True)
     Path(self.RESULTS_IMAGES_EPOCHS).mkdir(parents = True, exist_ok = True)
     Path(self.TRAINED_MODEL_PATH).mkdir(parents = True, exist_ok = True)
     Path(self.BACKUP_PARAMETERS_PATH).mkdir(parents = True, exist_ok = True)

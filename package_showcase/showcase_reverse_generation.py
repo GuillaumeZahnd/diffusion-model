@@ -23,5 +23,5 @@ def showcase_reverse_generation(p, generated_images, nb_images, id_epoch):
     im = axx.imshow(generated_images[idx], vmin = 0, vmax = 255, cmap = 'gray')
 
   file_name = 'generation_{:03d}.png'.format(id_epoch)
-  fig.savefig(os.path.join(p.RESULTS_IMAGES_EPOCHS, file_name), bbox_inches = 'tight')
+  fig.savefig(os.path.join(p.RESULTS_IMAGES_GENERATION, file_name), bbox_inches = 'tight')
   plt.close()

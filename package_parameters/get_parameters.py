@@ -18,13 +18,13 @@ def get_parameters():
     batch_size          = 4,
     nb_epochs           = 400,
     optimizer_nickname  = 'SGD',
-    learning_rate       = 0.001,
+    learning_rate       = 0.01,
     learning_momentum   = 0.99,
     scheduler_step_size = 1,
     scheduler_gamma     = 0.99,
     loss_nickname       = 'MSE',
-    variance_schedule   = 'SIGMOID',
+    variance_schedule   = 'LINEAR',
     beta_one            = 1e-4,
     beta_t              = 2e-2,
     nb_timesteps        = 200,
-    training_bootstrap  = 'NEW_TRAINING')
+    training_bootstrap  = 'RESUME_TRAINING')

@@ -50,13 +50,15 @@ if __name__ == '__main__':
       scheduler    = scheduler,
       min_val_loss = min_val_loss)
 
-    # Reverse diffusion
     if new_val_loss:
+      # Reverse diffusion
       routine_reverse_loop(
         p        = p,
         tdp      = tdp,
         model    = model,
         id_epoch = id_epoch)
+
+      # Reverse generation
       routine_reverse_generation(
         p        = p,
         tdp      = tdp,

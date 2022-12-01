@@ -32,5 +32,5 @@ def showcase_reverse_diffusion(img_through_timesteps, p, id_epoch):
     im = axx.imshow(img_through_timesteps[id_timestep_reverse], vmin = 0, vmax = 255, cmap = 'gray')
 
   file_name = 'diffusion_{:03d}.png'.format(id_epoch)
-  fig.savefig(os.path.join(p.RESULTS_IMAGES_EPOCHS, file_name), bbox_inches = 'tight')
+  fig.savefig(os.path.join(p.RESULTS_IMAGES_DIFFUSION, file_name), bbox_inches = 'tight')
   plt.close()
