@@ -1,4 +1,5 @@
 /__pycache__/*
+/wandb/*
 */__pycache__/*
 set_parameters.py
 *.swp

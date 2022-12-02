@@ -3,6 +3,7 @@ from package_model.get_model                       import get_model
 from package_model.get_optimizer_and_scheduler     import get_optimizer_and_scheduler
 from package_dataloaders.get_dataloaders           import get_dataloaders
 from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
+from package_utils.initiate_wandb                  import initiate_wandb
 from package_routines.routine_trn                  import routine_trn
 from package_routines.routine_val                  import routine_val
 from package_routines.routine_reverse_diffusion    import routine_reverse_diffusion
@@ -25,6 +26,9 @@ if __name__ == '__main__':
 
   # Get and instance of the tractable diffusion process
   tdp = TractableDiffusionProcess(p)
+
+  # Instantiate a run on Weights and Biases
+  initiate_wandb()
 
   # Loop
   for id_epoch in range(starting_epoch, p.NB_EPOCHS):

@@ -1,5 +1,6 @@
 import torch
 import time
+import wandb
 
 from package_model.compute_loss             import compute_loss
 from package_loggers.epoch_loss_accumulator import EpochLossAccumulator
@@ -86,6 +87,9 @@ def routine_trn(
     epoch_loss   = epoch_loss,
     time_epoch   = time_epoch,
     new_val_loss = False)
+
+  # Log metrics to Weights & Biases
+  wandb.log({'trn_loss': epoch_loss})
 
   # Learning rate evolution
   scheduler.step()

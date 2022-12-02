@@ -7,7 +7,7 @@ def get_parameters():
 
   return Parameters(
     # Experiment
-    experiment_id          = 'sharpshooter', # Nickname to uniquely identify the run
+    experiment_id          = 'tostaky', # Nickname to uniquely identify the run
     training_bootstrap     = 'NEW_TRAINING', # ['NEW_TRAINING', 'RESUME_TRAINING', 'USE_PRETRAINING']
     results_path           = '/home/guillaume/RESULTS/diffusion-model/', # Path to store the results
     # Dataset
@@ -19,7 +19,7 @@ def get_parameters():
     ima_size               = 64, # Image size after resizing
     cropping_method        = 'RANDOM_CROP', # ['CENTER_CROP_THEN_RESIZE', 'RANDOM_CROP'] Indicate how images shall be cropped
     # Training
-    backbone               = 'CONVNEXT', # ['RESNET', 'CONVNEXT']
+    backbone               = 'RESNET', # ['RESNET', 'CONVNEXT']
     nb_epochs              = 500, # Number of training epochs
     batch_size             = 4, # Batch size
     optimizer_nickname     = 'SGD', # ['ADAM', 'SGD']
