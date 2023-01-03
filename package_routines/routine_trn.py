@@ -9,7 +9,6 @@ from package_loggers.print_epoch_loss       import print_epoch_loss
 from package_showcase.showcase_image        import showcase_image
 
 
-# TODO --> Log the loss on W&B instead of TensorBoard
 def routine_trn(
   p,
   tdp,
@@ -89,7 +88,7 @@ def routine_trn(
     new_val_loss = False)
 
   # Log metrics to Weights & Biases
-  wandb.log({'trn_loss': epoch_loss})
+  wandb.log({'trn_loss': epoch_loss}, commit = False)
 
   # Learning rate evolution
   scheduler.step()

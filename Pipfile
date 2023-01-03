@@ -11,4 +11,4 @@ numpy       = {index = 'pypi', version = '==1.23.4'}
 matplotlib  = {index = 'pypi', version = '==3.6.0'}
 einops      = {index = 'pypi', version = '== 0.5.0'}
 tqdm        = {index = 'pypi', version = '== 4.64.1'}
-wandb       = {index = 'pypi', version = '== 0.13.5'}
+wandb       = {index = 'pypi', version = '== 0.13.7'}

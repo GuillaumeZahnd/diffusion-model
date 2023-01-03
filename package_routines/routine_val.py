@@ -10,7 +10,6 @@ from package_loggers.print_epoch_loss       import print_epoch_loss
 from package_showcase.showcase_image        import showcase_image
 
 
-# TODO --> Log the loss on W&B instead of TensorBoard
 def routine_val(
   p,
   tdp,
@@ -87,7 +86,6 @@ def routine_val(
       'optimizer_state_dict': optimizer.state_dict(),
       'scheduler_state_dict': scheduler.state_dict()},
       f = os.path.join(p.TRAINED_MODEL_PATH, p.TRAINED_MODEL_NAME))
-      # TODO --> Properly save the min val loss as well
   else:
     new_val_loss = False
 
@@ -99,12 +97,6 @@ def routine_val(
     time_epoch   = time_epoch,
     new_val_loss = new_val_loss)
 
-  # Log metrics to Weights & Biases
-  #wandb.log({'val_loss': epoch_loss})
-  #wandb.log({'min_val_loss': min_val_loss})
-
-  wandb.log({
-    'val_loss': epoch_loss,
-    'min_val_loss': min_val_loss})
+  wandb.log({'val_loss': epoch_loss, 'min_val_loss': min_val_loss})
 
   return min_val_loss, new_val_loss

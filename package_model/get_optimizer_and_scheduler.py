@@ -36,7 +36,7 @@ def get_optimizer_and_scheduler(p, model):
 
     # TODO --> Use the pretrained model of Experiment X to train the model of Experiment Y
     # TODO --> Ascertain that different learnable parameters can be used
-    path_to_checkpoint = '/home/guillaume/RESULTS/diffusion-model/run_one/trained_model/model_min_val_loss_run_one.pt'
+    path_to_checkpoint = '/home/guillaume/RESULTS/diffusion-model/renaissance_04/trained_model/model_min_val_loss_renaissance_04.pt' # TODO
     checkpoint = torch.load(path_to_checkpoint, map_location = p.DEVICE)
     model.load_state_dict(checkpoint['model_state_dict'], strict = False)
     starting_epoch = 0
