@@ -21,17 +21,17 @@ def set_parameters():
     ima_size               = 128,                       # Image size after resizing
     cropping_method        = 'CENTER_CROP_THEN_RESIZE', # ['CENTER_CROP_THEN_RESIZE', 'RANDOM_CROP'] Indicate how images shall be cropped
     # Training
-    backbone               = 'CONVNEXT',                # ['RESNET', 'CONVNEXT']
-    nb_epochs              = 100,                       # Number of training epochs
+    backbone               = 'RESNET',                  # ['RESNET', 'CONVNEXT']
+    nb_epochs              = 500,                       # Number of training epochs
     batch_size             = 4,                         # Batch size
     optimizer_nickname     = 'SGD',                     # ['SGD', 'ADAM']
-    learning_rate          = 1e-3,                      # Learning rate
+    learning_rate          = 0.005,                     # Learning rate
     learning_momentum      = 0.99,                      # Learning momentum
     scheduler_step_size    = 1,                         # Scheduler step size
     scheduler_gamma        = 0.99,                      # Scheduler gamma
-    loss_nickname          = 'MSE',                     # ['MSE', 'MAE', 'HUBER'] Loss function
+    loss_nickname          = 'MAE',                     # ['MSE', 'MAE', 'HUBER'] Loss function
     # Diffusion
-    nb_timesteps_learning  = 4000,                      # Number of diffusion timesteps during the learning process, from 1 to T with stride=1
+    nb_timesteps_learning  = 200,                       # Number of diffusion timesteps during the learning process, from 1 to T with stride=1
     nb_timesteps_inference = 50,                        # Number of diffusion timesteps during the inference process, from 1 to T with stride>=1
     beta_one               = 1e-4,                      # Parametrization of the Gaussian distribution at initial timestep 1
     beta_t                 = 2e-2,                      # Parametrization of the Gaussian distribution at final timestep T
