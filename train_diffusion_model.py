@@ -55,16 +55,19 @@ if __name__ == '__main__':
       min_val_loss = min_val_loss)
 
     if new_val_loss:
-      # Reverse diffusion
-      routine_reverse_diffusion(
-        p        = p,
-        tdp      = tdp,
-        model    = model,
-        id_epoch = id_epoch)
 
-      # Reverse generation
-      routine_reverse_generation(
-        p        = p,
-        tdp      = tdp,
-        model    = model,
-        id_epoch = id_epoch)
+      DO_REVERSE_DIFFUSION = False
+      if DO_REVERSE_DIFFUSION:
+        routine_reverse_diffusion(
+          p        = p,
+          tdp      = tdp,
+          model    = model,
+          id_epoch = id_epoch)
+
+      DO_REVERSE_GENERATION = True
+      if DO_REVERSE_GENERATION:
+        routine_reverse_generation(
+          p        = p,
+          tdp      = tdp,
+          model    = model,
+          id_epoch = id_epoch)

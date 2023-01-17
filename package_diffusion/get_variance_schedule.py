@@ -26,21 +26,20 @@ def quadratic_beta_schedule(nb_timesteps, beta_one, beta_t):
 
 
 # ----------------------------------------------------------------
-# --> FIXME
 def cosine_beta_schedule(nb_timesteps, beta_one, beta_t):
-  steps = nb_timesteps + 1
-  s = 0.008
-  clip_low = 0.0001
-  clip_high = 0.9999
-  x = torch.linspace(0, nb_timesteps, steps)
-  alphas_cumprod = torch.cos(((x / nb_timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
+  steps          = nb_timesteps + 1
+  offset         = 1e-2         # Prevent betas from being too small near t=0
+  clip_low       = 1e-3         # Prevent singularities at the start of the diffusion process near t=0
+  clip_high      = 1 - clip_low # Prevent singularities at the end of the diffusion proces near t=T
+  x              = torch.linspace(0, nb_timesteps, steps)
+  alphas_cumprod = torch.cos(((x / nb_timesteps) + offset) / (1 + offset) * torch.pi * 0.5) ** 2
   alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
-  betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
-  # return torch.clip(betas, clip_low, clip_high)
+  betas          = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
   return torch.clip(betas, clip_low, clip_high) * beta_t
 
 
 # ----------------------------------------------------------------
 def sigmoid_beta_schedule(nb_timesteps, beta_one, beta_t):
-  betas = torch.linspace(-6, 6, nb_timesteps)
+  half_support = 7
+  betas        = torch.linspace(-half_support, half_support, nb_timesteps)
   return torch.sigmoid(betas) * (beta_t - beta_one) + beta_one
