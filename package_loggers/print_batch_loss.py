@@ -17,7 +17,7 @@ def print_batch_loss(epoch_id, phase, epoch_loss_accumulator, time_epoch, batch_
   # The symbol "NEW_LINE" is used to mark the succession between different epochs by a blank line
   if(batch_id == 0) and (epoch_id > 0) and (phase == 'Trn'):
     # A new line is needed to separate the log when entering within a new epoch
-    NEW_LINE = '\n'
+    NEW_LINE = '\n\n'
   else:
     # No separation space is required
     NEW_LINE = ''

@@ -15,6 +15,8 @@ class Parameters:
     results_path,
     dataset_trn_path,
     dataset_val_path,
+    pretraining_path,
+    pretraining_name,
     ima_extension,
     nb_samples_limit,
     rgb_or_grayscale,
@@ -37,18 +39,20 @@ class Parameters:
     ):
 
     # Experiment
-    self.EXPERIMENT_ID       = experiment_id
-    self.TRAINING_BOOTSTRAP  = training_bootstrap
-    self.RESULTS_PATH        = results_path
+    self.EXPERIMENT_ID              = experiment_id
+    self.TRAINING_BOOTSTRAP         = training_bootstrap
+    self.RESULTS_PATH               = results_path
+    self.PRETRAINED_CHECKPOINT_PATH = pretraining_path
+    self.PRETRAINED_CHECKPOINT_NAME = pretraining_name
 
     # Dataset
-    self.DATASET_TRN_PATH    = dataset_trn_path
-    self.DATASET_VAL_PATH    = dataset_val_path
-    self.IMA_EXTENSION       = ima_extension
-    self.NB_SAMPLES_LIMIT    = nb_samples_limit
-    self.RGB_OR_GRAYSCALE    = rgb_or_grayscale
-    self.IMA_SIZE            = ima_size
-    self.CROPPING_METHOD     = cropping_method
+    self.DATASET_TRN_PATH = dataset_trn_path
+    self.DATASET_VAL_PATH = dataset_val_path
+    self.IMA_EXTENSION    = ima_extension
+    self.NB_SAMPLES_LIMIT = nb_samples_limit
+    self.RGB_OR_GRAYSCALE = rgb_or_grayscale
+    self.IMA_SIZE         = ima_size
+    self.CROPPING_METHOD  = cropping_method
 
     # Training
     self.BACKBONE            = backbone
@@ -90,7 +94,7 @@ class Parameters:
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'images_diffusion')
     self.RESULTS_IMAGES_GENERATION = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'images_generation')
-    self.RESULTS_IMAGES_EPOCHS = os.path.join( # TODO --> Use better names
+    self.RESULTS_IMAGES_EPOCHS = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trn_val_tst_images_across_epochs')
     self.TRAINED_MODEL_PATH = os.path.join(
       self.RESULTS_PATH, self.EXPERIMENT_ID, 'trained_model')

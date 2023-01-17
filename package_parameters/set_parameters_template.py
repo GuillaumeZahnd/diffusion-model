@@ -10,6 +10,8 @@ def set_parameters():
     experiment_id          = '???',                     # Nickname to uniquely identify the run
     training_bootstrap     = 'NEW_TRAINING',            # ['NEW_TRAINING', 'RESUME_TRAINING', 'USE_PRETRAINING']
     results_path           = '???',                     # Path to store the results
+    pretraining_path       = '???',                     # Path to the checkpoint of a pre-trained model
+    pretraining_name       = '???',                     # Name (including ".pt" extension) of the checkpoint of a pre-trained model
     # Dataset
     dataset_trn_path       = '???',                     # Path to the training set folder
     dataset_val_path       = '???',                     # Path to the validation set folder
