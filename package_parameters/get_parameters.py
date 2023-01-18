@@ -7,11 +7,11 @@ def get_parameters():
 
   return Parameters(
     # Experiment
-    experiment_id          = 'afhq_07', # Nickname to uniquely identify the run
-    training_bootstrap     = 'NEW_TRAINING', # ['NEW_TRAINING', 'RESUME_TRAINING', 'USE_PRETRAINING']
+    experiment_id          = 'afhq_08', # Nickname to uniquely identify the run
+    training_bootstrap     = 'USE_PRETRAINING', # ['NEW_TRAINING', 'RESUME_TRAINING', 'USE_PRETRAINING']
     results_path           = '/home/guillaume/RESULTS/diffusion-model/', # Path to store the results
-    pretraining_path       = '', # Path to the checkpoint of a pre-trained model
-    pretraining_name       = '', # Name (including ".pt" extension) of the checkpoint of a pre-trained model
+    pretraining_path       = '/home/guillaume/RESULTS/diffusion-model/afhq_07/trained_model/', # Path to the checkpoint of a pre-trained model
+    pretraining_name       = 'model_min_val_loss_afhq_07.pt', # Name (including ".pt" extension) of the checkpoint of a pre-trained model
     # Dataset
     dataset_trn_path       = '/home/guillaume/DATASETS/stargan-v2/data/afhq_v2/train/', # Path to the training set folder
     dataset_val_path       = '/home/guillaume/DATASETS/stargan-v2/data/afhq_v2/test/', # Path to the validation set folder
