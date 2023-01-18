@@ -2,6 +2,7 @@ import os
 import sys
 import torch
 
+from package_parameters.get_parameters             import get_parameters
 from package_model.get_model                       import get_model
 from package_diffusion.tractable_diffusion_process import TractableDiffusionProcess
 from package_routines.routine_reverse_diffusion    import routine_reverse_diffusion
