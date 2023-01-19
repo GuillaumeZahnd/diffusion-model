@@ -7,15 +7,17 @@ def get_parameters():
 
   return Parameters(
     # Experiment
-    experiment_id          = 'renaissance_02', # Nickname to uniquely identify the run
+    experiment_id          = 'afhq_09', # Nickname to uniquely identify the run
     training_bootstrap     = 'NEW_TRAINING', # ['NEW_TRAINING', 'RESUME_TRAINING', 'USE_PRETRAINING']
-    results_path           = '/home/guillaume/RESULTS/diffusion-model/', # Path to store the results
+    results_path           = 'home/guillaume/RESULTS/diffusion-model/', # Path to store the results
     pretraining_path       = '', # Path to the checkpoint of a pre-trained model
     pretraining_name       = '', # Name (including ".pt" extension) of the checkpoint of a pre-trained model
     # Dataset
-    dataset_trn_path       = '/home/guillaume/DATASETS/artbench/train/renaissance/', # Path to the training set folder
-    dataset_val_path       = '/home/guillaume/DATASETS/artbench/test/renaissance/', # Path to the validation set folder
-    ima_extension          = '.jpg', # ['.jpg', '.png', ...] File format
+    dataset_trn_path       = '/home/guillaume/DATASETS/stargan-v2/data/afhq_v2/train/', # Path to the training set folder
+    dataset_val_path       = '/home/guillaume/DATASETS/stargan-v2/data/afhq_v2/test/', # Path to the validation set folder
+    #dataset_trn_path       = '/home/guillaume/DATASETS/artbench/train/renaissance/', # Path to the training set folder
+    #dataset_val_path       = '/home/guillaume/DATASETS/artbench/test/renaissance/', # Path to the validation set folder
+    ima_extension          = '.png', # ['.jpg', '.png', ...] File format
     nb_samples_limit       = math.inf, # ['math.inf', 2000, ...] Maximal number of samples per epoch
     rgb_or_grayscale       = 'rgb', # ['RGB', 'GRAYSCALE'] Indicate whether images are to be treated as RGB or grayscale
     ima_size               = 128, # Image size after resizing
